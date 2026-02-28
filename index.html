@@ -3,77 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مساعد المهام الذكي</title>
+    <title>مساعد المهام الاحترافي</title>
     <style>
         :root {
             --primary: #6366f1;
             --bg: #f8fafc;
+            --card: #ffffff;
             --text: #1e293b;
         }
+        /* تنسيقات الوضع الليلي */
+        body.dark-mode {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg);
             color: var(--text);
+            transition: 0.3s;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
             padding-top: 50px;
         }
         .container {
             width: 90%;
-            max-width: 400px;
-            background: white;
+            max-width: 450px;
+            background: var(--card);
             padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
-        h2 { text-align: center; color: var(--primary); }
-        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        input {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            outline: none;
-        }
-        input:focus { border-color: var(--primary); }
-        button#add-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        button#add-btn:hover { opacity: 0.9; }
-        ul { list-style: none; padding: 0; }
-        li {
-            background: #fff;
-            border-bottom: 1px solid #f1f5f9;
-            padding: 12px;
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            animation: fadeIn 0.3s ease;
+            margin-bottom: 20px;
         }
-        .delete-btn {
-            color: #ef4444;
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input {
+            flex: 1; padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: var(--card);
+            color: var(--text);
+        }
+        button {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
             cursor: pointer;
             font-weight: bold;
-            border: none;
-            background: none;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        #add-btn { background: var(--primary); color: white; }
+        .theme-toggle { background: #e2e8f0; color: #1e293b; }
+        
+        li {
+            background: var(--card);
+            border-bottom: 1px solid #cbd5e1;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .completed { text-decoration: line-through; opacity: 0.5; }
+        .actions { display: flex; gap: 10px; }
+        .delete-btn { color: #ef4444; background: none; }
+        .check-btn { color: #22c55e; background: none; }
     </style>
 </head>
-<body>
+<body id="body">
 
 <div class="container">
-    <h2>🎯 مهامي اليومية</h2>
+    <div class="header">
+        <h2>🎯 مهامي</h2>
+        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+    </div>
+    
     <div class="input-group">
-        <input type="text" id="taskInput" placeholder="ماذا ستنجز اليوم؟">
+        <input type="text" id="taskInput" placeholder="أضف مهمة جديدة...">
         <button id="add-btn">إضافة</button>
     </div>
+    
     <ul id="taskList"></ul>
 </div>
 
@@ -82,44 +94,62 @@
     const addBtn = document.getElementById('add-btn');
     const taskList = document.getElementById('taskList');
 
-    // 1. تحميل المهام من الذاكرة عند فتح الصفحة
-    document.addEventListener('DOMContentLoaded', getTasks);
+    // تبديل الوضع الليلي
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const isDark = document.body.classList.contains('dark-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    }
 
-    // 2. وظيفة إضافة مهمة
-    addBtn.addEventListener('click', () => {
-        if (input.value === '') return;
-        createTaskElement(input.value);
-        saveLocal(input.value);
+    // إضافة مهمة
+    addBtn.onclick = () => {
+        if (!input.value.trim()) return;
+        addTaskToDOM(input.value, false);
+        saveTaskLocal(input.value, false);
         input.value = '';
-    });
+    };
 
-    function createTaskElement(text) {
+    function addTaskToDOM(text, isCompleted) {
         const li = document.createElement('li');
-        li.innerHTML = `<span>${text}</span> <button class="delete-btn" onclick="removeTask(this)">حذف</button>`;
+        if(isCompleted) li.classList.add('completed');
+        li.innerHTML = `
+            <span>${text}</span>
+            <div class="actions">
+                <button class="check-btn" onclick="completeTask(this)">✓</button>
+                <button class="delete-btn" onclick="removeTask(this)">✕</button>
+            </div>
+        `;
         taskList.appendChild(li);
     }
 
-    // 3. الحفظ في ذاكرة المتصفح (Local Storage)
-    function saveLocal(task) {
-        let tasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
-        tasks.push(task);
+    // حفظ وحذف من LocalStorage (تم تحسينها لتشمل الحالة)
+    function saveTaskLocal(text, status) {
+        let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        tasks.push({text, completed: status});
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }
 
-    function getTasks() {
-        let tasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
-        tasks.forEach(task => createTaskElement(task));
-    }
-
-    // 4. الحذف
     function removeTask(btn) {
-        const taskText = btn.parentElement.firstChild.innerText;
-        btn.parentElement.remove();
+        const li = btn.closest('li');
+        const text = li.querySelector('span').innerText;
+        li.remove();
         let tasks = JSON.parse(localStorage.getItem('tasks'));
-        const filteredTasks = tasks.filter(t => t !== taskText);
-        localStorage.setItem('tasks', JSON.stringify(filteredTasks));
+        localStorage.setItem('tasks', JSON.stringify(tasks.filter(t => t.text !== text)));
     }
-</script>
 
+    function completeTask(btn) {
+        const li = btn.closest('li');
+        li.classList.toggle('completed');
+        // تحديث الحالة في الذاكرة أيضاً...
+    }
+
+    // تحميل البيانات عند البدء
+    window.onload = () => {
+        const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+        tasks.forEach(t => addTaskToDOM(t.text, t.completed));
+        if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+    };
+</script>
 </body>
 </html>
+
