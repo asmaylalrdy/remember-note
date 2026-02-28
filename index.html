@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساعد المهام الذكي</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #f8fafc;
+            --text: #1e293b;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            padding-top: 50px;
+        }
+        .container {
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+        h2 { text-align: center; color: var(--primary); }
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            outline: none;
+        }
+        input:focus { border-color: var(--primary); }
+        button#add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button#add-btn:hover { opacity: 0.9; }
+        ul { list-style: none; padding: 0; }
+        li {
+            background: #fff;
+            border-bottom: 1px solid #f1f5f9;
+            padding: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+        .delete-btn {
+            color: #ef4444;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            background: none;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🎯 مهامي اليومية</h2>
+    <div class="input-group">
+        <input type="text" id="taskInput" placeholder="ماذا ستنجز اليوم؟">
+        <button id="add-btn">إضافة</button>
+    </div>
+    <ul id="taskList"></ul>
+</div>
+
+<script>
+    const input = document.getElementById('taskInput');
+    const addBtn = document.getElementById('add-btn');
+    const taskList = document.getElementById('taskList');
+
+    // 1. تحميل المهام من الذاكرة عند فتح الصفحة
+    document.addEventListener('DOMContentLoaded', getTasks);
+
+    // 2. وظيفة إضافة مهمة
+    addBtn.addEventListener('click', () => {
+        if (input.value === '') return;
+        createTaskElement(input.value);
+        saveLocal(input.value);
+        input.value = '';
+    });
+
+    function createTaskElement(text) {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${text}</span> <button class="delete-btn" onclick="removeTask(this)">حذف</button>`;
+        taskList.appendChild(li);
+    }
+
+    // 3. الحفظ في ذاكرة المتصفح (Local Storage)
+    function saveLocal(task) {
+        let tasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
+        tasks.push(task);
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+    }
+
+    function getTasks() {
+        let tasks = localStorage.getItem('tasks') ? JSON.parse(localStorage.getItem('tasks')) : [];
+        tasks.forEach(task => createTaskElement(task));
+    }
+
+    // 4. الحذف
+    function removeTask(btn) {
+        const taskText = btn.parentElement.firstChild.innerText;
+        btn.parentElement.remove();
+        let tasks = JSON.parse(localStorage.getItem('tasks'));
+        const filteredTasks = tasks.filter(t => t !== taskText);
+        localStorage.setItem('tasks', JSON.stringify(filteredTasks));
+    }
+</script>
+
+</body>
+</html>
