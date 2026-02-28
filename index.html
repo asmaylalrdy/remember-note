@@ -3,87 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مساعد المهام الاحترافي</title>
+    <title>Rady Remember Note 📝</title>
     <style>
         :root {
-            --primary: #6366f1;
-            --bg: #f8fafc;
+            --primary: #4f46e5;
+            --bg: #f3f4f6;
             --card: #ffffff;
-            --text: #1e293b;
+            --text: #1f2937;
+            --accent: #818cf8;
         }
-        /* تنسيقات الوضع الليلي */
         body.dark-mode {
-            --bg: #0f172a;
-            --card: #1e293b;
-            --text: #f8fafc;
+            --bg: #111827;
+            --card: #1f2937;
+            --text: #f9fafb;
         }
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            transition: 0.3s;
+            transition: all 0.3s ease;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 50px;
+            justify-content: center;
+            padding: 40px 20px;
+            margin: 0;
         }
         .container {
-            width: 90%;
+            width: 100%;
             max-width: 450px;
             background: var(--card);
             padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
-        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        input {
-            flex: 1; padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            background: var(--card);
-            color: var(--text);
+        h2 { 
+            font-size: 1.5rem; 
+            margin: 0;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        button {
-            padding: 10px 20px;
-            border-radius: 10px;
+        .theme-toggle {
+            background: var(--bg);
             border: none;
+            font-size: 1.2rem;
             cursor: pointer;
-            font-weight: bold;
+            padding: 8px;
+            border-radius: 12px;
+            transition: 0.2s;
         }
-        #add-btn { background: var(--primary); color: white; }
-        .theme-toggle { background: #e2e8f0; color: #1e293b; }
-        
+        .input-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        input {
+            flex: 1;
+            padding: 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 14px;
+            background: var(--bg);
+            color: var(--text);
+            outline: none;
+            transition: 0.2s;
+        }
+        input:focus { border-color: var(--primary); }
+        #add-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        ul { list-style: none; padding: 0; }
         li {
-            background: var(--card);
-            border-bottom: 1px solid #cbd5e1;
+            background: var(--bg);
+            margin-bottom: 12px;
             padding: 15px;
+            border-radius: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            animation: slideIn 0.3s ease;
         }
-        .completed { text-decoration: line-through; opacity: 0.5; }
-        .actions { display: flex; gap: 10px; }
-        .delete-btn { color: #ef4444; background: none; }
-        .check-btn { color: #22c55e; background: none; }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .completed span { text-decoration: line-through; opacity: 0.5; }
+        .actions button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-right: 5px;
+        }
+        .del-icon { color: #ef4444; }
+        .check-icon { color: #10b981; }
     </style>
 </head>
 <body id="body">
 
 <div class="container">
     <div class="header">
-        <h2>🎯 مهامي</h2>
-        <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+        <h2>🚀 Rady Remember Note</h2>
+        <button class="theme-toggle" onclick="toggleTheme()" id="themeIcon">🌙</button>
     </div>
     
     <div class="input-group">
-        <input type="text" id="taskInput" placeholder="أضف مهمة جديدة...">
-        <button id="add-btn">إضافة</button>
+        <input type="text" id="taskInput" placeholder="اكتب ملاحظة جديدة...">
+        <button id="add-btn">حفظ</button>
     </div>
     
     <ul id="taskList"></ul>
@@ -94,62 +130,65 @@
     const addBtn = document.getElementById('add-btn');
     const taskList = document.getElementById('taskList');
 
-    // تبديل الوضع الليلي
+    // تبديل الثيم
     function toggleTheme() {
         document.body.classList.toggle('dark-mode');
         const isDark = document.body.classList.contains('dark-mode');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
+        localStorage.setItem('rady_theme', isDark ? 'dark' : 'light');
     }
 
-    // إضافة مهمة
+    // إضافة ملاحظة
     addBtn.onclick = () => {
         if (!input.value.trim()) return;
-        addTaskToDOM(input.value, false);
-        saveTaskLocal(input.value, false);
+        const taskObj = { text: input.value, completed: false, id: Date.now() };
+        addTaskToDOM(taskObj);
+        saveTaskLocal(taskObj);
         input.value = '';
     };
 
-    function addTaskToDOM(text, isCompleted) {
+    function addTaskToDOM(task) {
         const li = document.createElement('li');
-        if(isCompleted) li.classList.add('completed');
+        li.dataset.id = task.id;
+        if(task.completed) li.classList.add('completed');
+        
         li.innerHTML = `
-            <span>${text}</span>
+            <span>${task.text}</span>
             <div class="actions">
-                <button class="check-btn" onclick="completeTask(this)">✓</button>
-                <button class="delete-btn" onclick="removeTask(this)">✕</button>
+                <button class="check-icon" onclick="toggleComplete(${task.id})">✓</button>
+                <button class="del-icon" onclick="deleteTask(${task.id})">✕</button>
             </div>
         `;
-        taskList.appendChild(li);
+        taskList.prepend(li); // الملاحظة الجديدة تظهر في الأعلى
     }
 
-    // حفظ وحذف من LocalStorage (تم تحسينها لتشمل الحالة)
-    function saveTaskLocal(text, status) {
-        let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-        tasks.push({text, completed: status});
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+    function saveTaskLocal(task) {
+        let tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
+        tasks.push(task);
+        localStorage.setItem('rady_notes', JSON.stringify(tasks));
     }
 
-    function removeTask(btn) {
-        const li = btn.closest('li');
-        const text = li.querySelector('span').innerText;
-        li.remove();
-        let tasks = JSON.parse(localStorage.getItem('tasks'));
-        localStorage.setItem('tasks', JSON.stringify(tasks.filter(t => t.text !== text)));
+    function deleteTask(id) {
+        document.querySelector(`[data-id="${id}"]`).remove();
+        let tasks = JSON.parse(localStorage.getItem('rady_notes'));
+        localStorage.setItem('rady_notes', JSON.stringify(tasks.filter(t => t.id !== id)));
     }
 
-    function completeTask(btn) {
-        const li = btn.closest('li');
+    function toggleComplete(id) {
+        const li = document.querySelector(`[data-id="${id}"]`);
         li.classList.toggle('completed');
-        // تحديث الحالة في الذاكرة أيضاً...
+        let tasks = JSON.parse(localStorage.getItem('rady_notes'));
+        tasks = tasks.map(t => t.id === id ? {...t, completed: !t.completed} : t);
+        localStorage.setItem('rady_notes', JSON.stringify(tasks));
     }
 
-    // تحميل البيانات عند البدء
+    // تحميل البيانات عند فتح التطبيق
     window.onload = () => {
-        const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-        tasks.forEach(t => addTaskToDOM(t.text, t.completed));
-        if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+        const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
+        tasks.forEach(t => addTaskToDOM(t));
+        if(localStorage.getItem('rady_theme') === 'dark') toggleTheme();
     };
 </script>
+
 </body>
 </html>
-
