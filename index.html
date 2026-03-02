@@ -10,7 +10,7 @@
     <style>
         :root {
             --primary: #6366f1;
-            --bg: #f1f5f9; /* خلفية رمادية فاتحة جداً بدلاً من الأبيض المزعج */
+            --bg: #f8fafc; /* خلفية ناعمة مريحة للعين */
             --card: #ffffff;
             --text: #1e293b;
             --accent: #818cf8;
@@ -38,23 +38,29 @@
             background: var(--card);
             padding: 2.5rem;
             border-radius: 35px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
+            position: relative;
         }
-        /* الأيقونة الرئيسية */
-        .app-icon { font-size: 3rem; text-align: center; margin-bottom: 10px; }
+        .app-icon { font-size: 3rem; text-align: center; margin-bottom: 10px; cursor: default; }
         
         .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
         h2 { font-size: 1.8rem; color: var(--primary); margin: 0; font-weight: 800; }
         
-        .stats { font-size: 0.85rem; background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; }
+        .btn-header-group { display: flex; gap: 10px; align-items: center; }
+        .share-app-btn {
+            background: var(--primary); color: white; border: none; padding: 6px 14px;
+            border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 0.85rem;
+            transition: 0.3s; font-family: 'Cairo', sans-serif;
+        }
+        .share-app-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
 
         .input-section { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
         input { 
             padding: 16px; border: 2px solid #e2e8f0; border-radius: 18px; 
             background: var(--bg); color: var(--text); outline: none; transition: 0.3s;
-            font-family: 'Cairo', sans-serif; font-size: 1rem;
+            font-family: 'Cairo', sans-serif;
         }
-        input:focus { border-color: var(--primary); background: var(--card); }
+        input:focus { border-color: var(--primary); background: var(--card); box-shadow: 0 0 15px rgba(99, 102, 241, 0.1); }
 
         .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         #add-btn, #pdf-btn { 
@@ -63,33 +69,31 @@
         }
         #add-btn { background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; }
         #pdf-btn { background: #e2e8f0; color: #475569; }
-        
+
         #searchBox { border-style: dashed; border-color: var(--accent); margin-top: 10px; }
 
         ul { list-style: none; padding: 0; margin-top: 25px; }
         li { 
             background: var(--card); margin-bottom: 18px; padding: 20px; 
             border-radius: 22px; border-right: 8px solid var(--primary);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
             display: flex; justify-content: space-between; align-items: center;
             animation: slideIn 0.5s ease;
         }
-        @keyframes slideIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         
-        .note-text { font-weight: 700; font-size: 1.1rem; color: var(--text); }
+        .note-text { font-weight: 700; font-size: 1.1rem; }
         .time-tag { font-size: 0.85rem; color: var(--success); display: block; margin-top: 8px; font-weight: bold; }
 
         .actions { display: flex; gap: 10px; }
         .action-btn { 
             border: none; width: 40px; height: 40px; border-radius: 12px; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: 0.2s;
         }
-        .share-btn { background: #ecfdf5; color: #059669; }
+        .action-btn:active { transform: scale(0.9); }
         .del-btn { background: #fef2f2; color: #dc2626; }
 
-        .dev-footer { 
-            margin-top: 50px; text-align: center; border-top: 2px solid var(--bg); padding-top: 25px; 
-        }
+        .dev-footer { margin-top: 50px; text-align: center; border-top: 2px solid var(--bg); padding-top: 25px; }
         .shiny-name {
             font-weight: 800; font-size: 1.4rem;
             background: linear-gradient(90deg, #6366f1, #ec4899, #6366f1);
@@ -97,8 +101,8 @@
             animation: shine 3s linear infinite;
         }
         @keyframes shine { to { background-position: 200% center; } }
-        .contact-box { font-size: 0.85rem; margin-top: 12px; line-height: 1.6; color: var(--text); opacity: 0.9; }
-        .contact-box a { color: var(--primary); text-decoration: none; font-weight: bold; }
+        .contact-links { font-size: 0.85rem; margin-top: 10px; color: var(--text); opacity: 0.8; }
+        .contact-links a { color: var(--primary); text-decoration: none; font-weight: bold; margin: 0 5px; }
     </style>
 </head>
 <body>
@@ -107,19 +111,22 @@
     <div class="app-icon">🚀</div>
     <div class="header">
         <h2>Rady Note</h2>
-        <button onclick="toggleTheme()" id="themeIcon" style="border:none; background:none; cursor:pointer; font-size:1.8rem;">🌙</button>
+        <div class="btn-header-group">
+            <button onclick="shareApp()" class="share-app-btn">شارك التطبيق 🔗</button>
+            <button onclick="toggleTheme()" id="themeIcon" style="border:none; background:none; cursor:pointer; font-size:1.6rem;">🌙</button>
+        </div>
     </div>
     
-    <div style="margin-bottom: 20px;"><span class="stats" id="count">0 ملاحظة</span></div>
+    <div style="margin-bottom: 20px;"><span id="count" style="font-size:0.85rem; background:var(--primary); color:white; padding:4px 12px; border-radius:20px; font-weight:bold;">0 ملاحظة</span></div>
 
     <div class="input-section">
-        <input type="text" id="taskInput" placeholder="ماذا تريد أن تتذكر؟">
+        <input type="text" id="taskInput" placeholder="اكتب ملاحظة ذكية...">
         <input type="datetime-local" id="taskTime">
         <div class="btn-group">
-            <button id="add-btn">حفظ الملاحظة ✨</button>
-            <button id="pdf-btn" onclick="exportToPDF()">تصدير PDF 📄</button>
+            <button id="add-btn">حفظ 💾</button>
+            <button id="pdf-btn" onclick="exportToPDF()">ملف PDF 📄</button>
         </div>
-        <input type="text" id="searchBox" placeholder="🔍 ابحث في ذاكرة التطبيق...">
+        <input type="text" id="searchBox" placeholder="🔍 ابحث في ملاحظاتك...">
     </div>
     
     <ul id="taskList"></ul>
@@ -127,9 +134,9 @@
     <div class="dev-footer">
         <div style="font-size: 0.9rem; margin-bottom: 5px;">بإشراف وتطوير</div>
         <div class="shiny-name">Ismail Ahmed Alrady</div>
-        <div class="contact-box">
-            📧 <a href="mailto:asmaylalrdy744@gmail.com">asmaylalrdy744@gmail.com</a><br>
-            📂 <a href="https://github.com/asmaylalrdy" target="_blank">GitHub Profile</a>
+        <div class="contact-links">
+            📧 <a href="mailto:asmaylalrdy744@gmail.com">البريد</a> | 
+            📂 <a href="https://github.com/asmaylalrdy" target="_blank">GitHub</a>
         </div>
     </div>
 </div>
@@ -154,6 +161,21 @@
         const isDark = document.body.classList.contains('dark-mode');
         document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
         localStorage.setItem('rady_theme', isDark ? 'dark' : 'light');
+    }
+
+    // مشاركة رابط التطبيق
+    function shareApp() {
+        const url = window.location.href;
+        if (navigator.share) {
+            navigator.share({
+                title: 'تطبيق Rady Note 📝',
+                text: 'أنصحك بتجربة هذا التطبيق الرائع للملاحظات الذكية!',
+                url: url
+            });
+        } else {
+            navigator.clipboard.writeText(url);
+            alert('تم نسخ رابط التطبيق بنجاح!');
+        }
     }
 
     addBtn.onclick = () => {
@@ -182,20 +204,10 @@
                 ${task.time ? `<span class="time-tag">⏰ تذكير: ${new Date(task.time).toLocaleString('ar-EG')}</span>` : ''}
             </div>
             <div class="actions">
-                <button class="action-btn share-btn" onclick="shareNote('${task.text}')">📤</button>
                 <button class="action-btn del-btn" onclick="deleteTask(${task.id})">✕</button>
             </div>
         `;
         taskList.prepend(li);
-    }
-
-    function shareNote(text) {
-        if (navigator.share) {
-            navigator.share({ title: 'Rady Note', text: text, url: window.location.href });
-        } else {
-            navigator.clipboard.writeText(text);
-            alert('تم نسخ النص!');
-        }
     }
 
     function saveTaskLocal(task) {
@@ -218,7 +230,7 @@
         });
     };
 
-    // نظام المنبه المحسن (إصلاح الملاحظة الأولى)
+    // نظام الإشعارات المستقل (بدون alert)
     setInterval(() => {
         const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
         const now = new Date();
@@ -227,15 +239,16 @@
         tasks.forEach(t => {
             if (t.time && !t.notified) {
                 const tDate = new Date(t.time);
-                // فحص إذا كان الوقت الحالي قد تجاوز أو طابق وقت التنبيه بدقة
                 if (now >= tDate) {
-                    alert(`⏰ تنبيه من Rady Note:\n\n${t.text}`);
-                    // تشغيل صوت تنبيه بسيط
-                    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                    const osc = audioCtx.createOscillator();
-                    osc.connect(audioCtx.destination);
-                    osc.start(); osc.stop(audioCtx.currentTime + 0.5);
-                    
+                    if (Notification.permission === "granted") {
+                        new Notification("⏰ Rady Note", {
+                            body: t.text,
+                            icon: "https://asmaylalrdy.github.io/favicon.ico",
+                            requireInteraction: true // يبقى حتى تراه
+                        });
+                    } else {
+                        alert(`تذكير: ${t.text}`);
+                    }
                     t.notified = true;
                     updated = true;
                 }
@@ -243,7 +256,7 @@
         });
 
         if (updated) localStorage.setItem('rady_notes', JSON.stringify(tasks));
-    }, 10000); // الفحص كل 10 ثواني لضمان الدقة
+    }, 5000);
 
     function exportToPDF() {
         const element = document.getElementById('main-app');
@@ -251,6 +264,7 @@
     }
 
     window.onload = () => {
+        if ("Notification" in window) Notification.requestPermission();
         const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
         tasks.forEach(t => addTaskToDOM(t));
         updateCount();
