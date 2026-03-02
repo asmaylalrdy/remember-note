@@ -17,189 +17,184 @@
             --danger: #ef4444;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            margin: 0; padding: 10px;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh; overflow-x: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden; /* يمنع الصفحة كاملة من التمدد */
+            padding: 10px;
         }
 
         .container {
-            width: 100%; max-width: 450px;
+            width: 100%;
+            max-width: 450px;
             background: var(--card);
-            padding: 1.5rem; border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; gap: 15px;
-            max-height: 90vh; /* تحديد ارتفاع الحاوية */
+            border-radius: 25px;
+            display: flex;
+            flex-direction: column;
+            height: 85vh; /* ارتفاع ثابت للواجهة */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            padding: 1.2rem;
+            position: relative;
         }
 
-        .header { display: flex; justify-content: space-between; align-items: center; }
-        
-        .stats-badge {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--primary-solid);
-            padding: 4px 12px; border-radius: 20px;
-            font-size: 0.9rem; font-weight: 800; border: 1px solid var(--primary-solid);
+        .header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding-bottom: 15px;
+            flex-shrink: 0;
         }
-
-        .controls { display: flex; gap: 8px; align-items: center; }
         
+        .controls { display: flex; gap: 8px; }
+        
+        /* تأكيد ظهور الأزرار */
         .icon-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: var(--text); padding: 8px; border-radius: 12px; 
-            cursor: pointer; font-size: 1.2rem; transition: 0.3s;
+            background: rgba(255,255,255,0.1) !important;
+            border: 1px solid var(--accent) !important;
+            color: var(--text) !important;
+            padding: 8px 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: inline-block !important;
+            visibility: visible !important;
         }
 
         .lang-btn {
-            background: var(--primary-solid); color: var(--bg);
-            border: none; padding: 5px 12px; border-radius: 10px;
-            font-weight: 800; cursor: pointer; font-family: 'Cairo';
+            background: var(--primary-solid);
+            color: var(--bg);
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-weight: 800;
+            border: none;
         }
 
-        .input-section { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; }
+        .input-section { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 10px;
+            flex-shrink: 0;
+            background: var(--card);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #334155;
+        }
         
         input { 
-            padding: 14px; border: 2px solid #334155; border-radius: 15px; 
-            background: rgba(15, 23, 42, 0.6); color: var(--text);
+            padding: 12px; border: 2px solid #334155; border-radius: 12px; 
+            background: rgba(15, 23, 42, 0.8); color: var(--text);
             font-family: 'Cairo'; outline: none; width: 100%;
         }
 
         #add-btn { 
             background: var(--primary-gradient); color: white; border: none; 
-            padding: 14px; border-radius: 15px; font-weight: 800;
-            font-size: 1.1rem; cursor: pointer;
+            padding: 12px; border-radius: 12px; font-weight: 800; cursor: pointer;
         }
 
-        /* تعديل القائمة لتكون قابلة للتمرير */
+        /* الجزء المسؤول عن التمرير الداخلي فقط */
         .task-list { 
-            list-style: none; padding: 0; margin-top: 10px;
-            overflow-y: auto; flex-grow: 1; padding-right: 5px;
+            list-style: none;
+            overflow-y: auto; 
+            flex-grow: 1;
+            margin-top: 10px;
+            padding-right: 5px;
         }
 
-        /* تنسيق شريط التمرير (Scrollbar) */
-        .task-list::-webkit-scrollbar { width: 5px; }
-        .task-list::-webkit-scrollbar-thumb { background: var(--primary-solid); border-radius: 10px; }
-        
         li { 
-            background: rgba(255,255,255,0.03); margin-bottom: 12px; padding: 15px; 
-            border-radius: 20px; border-right: 5px solid var(--accent);
-            display: flex; flex-direction: column; gap: 5px; animation: fadeIn 0.3s;
+            background: rgba(255,255,255,0.03); 
+            margin-bottom: 10px; 
+            padding: 12px; 
+            border-radius: 15px; 
+            border-right: 4px solid var(--accent);
+            animation: fadeIn 0.3s;
         }
 
-        [dir="ltr"] li { border-right: none; border-left: 5px solid var(--accent); }
+        [dir="ltr"] li { border-right: none; border-left: 4px solid var(--accent); }
 
-        .task-header { display: flex; justify-content: space-between; align-items: center; }
-        .task-text { font-weight: 600; font-size: 1rem; color: var(--text); }
+        .task-header { display: flex; justify-content: space-between; }
+        .task-text { font-weight: 600; font-size: 0.95rem; }
         .task-time { font-size: 0.8rem; color: var(--accent); }
 
-        .delete-btn { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 1.1rem; }
-
         .dev-footer { 
-            margin-top: 20px; text-align: center; border-top: 1px solid #334155; 
-            padding-top: 15px; width: 100%; max-width: 450px; flex-shrink: 0;
+            margin-top: 10px; text-align: center; border-top: 1px solid #334155; 
+            padding-top: 10px; width: 100%; max-width: 450px;
+            flex-shrink: 0;
         }
         
-        .shiny-name { font-weight: 800; font-size: 1.2rem; color: var(--primary-solid); }
+        .shiny-name { font-weight: 800; font-size: 1.1rem; color: var(--primary-solid); }
 
-        .footer-links { display: flex; flex-direction: column; gap: 5px; margin-top: 10px; }
-        .footer-links a { color: var(--text); text-decoration: none; opacity: 0.8; font-size: 0.8rem; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } }
+        @keyframes fadeIn { from { opacity: 0; } }
     </style>
 </head>
-<body onclick="enableAudio()">
+<body onclick="initAudio()">
 
 <div class="container" id="appContent">
     <div class="header">
-        <div class="stats-badge" id="taskCount">0</div>
+        <div id="taskCount" style="color:var(--primary-solid); font-weight:800;">0</div>
         <div class="controls">
             <button onclick="toggleLanguage()" class="lang-btn" id="langBtn">EN</button>
-            <button onclick="shareApp()" class="icon-btn" title="مشاركة">🔗</button>
-            <button onclick="exportToPDF()" class="icon-btn" title="تحميل PDF">📥</button>
+            <button onclick="shareApp()" class="icon-btn">🔗</button>
+            <button onclick="exportToPDF()" class="icon-btn">📥</button>
         </div>
     </div>
     
-    <center><h2 id="appTitle" style="margin:5px 0;">🚀 Rady Note</h2></center>
-
     <div class="input-section">
+        <h3 id="appTitle" style="text-align:center; color:var(--accent);">Rady Note 🚀</h3>
         <input type="text" id="taskInput" placeholder="اكتب ملاحظة...">
         <input type="datetime-local" id="taskTime">
-        <button id="add-btn" onclick="addTask()">حفظ الملاحظة 💾</button>
+        <button id="add-btn" onclick="addTask()">حفظ 💾</button>
     </div>
     
     <ul id="taskList" class="task-list"></ul>
 </div>
 
 <div class="dev-footer">
-    <div id="footerDevBy">بإشراف وتطوير المهندس</div>
-    <span class="shiny-name">Ismail Ahmed Alrady</span>
-    <div class="footer-links">
-        <a href="mailto:asmaylalrdy744@gmail.com">📧 asmaylalrdy744@gmail.com</a>
-        <a href="https://github.com/asmaylalrdy" target="_blank">🔗 GitHub: asmaylalrdy</a>
+    <span id="footerDevBy">بإشراف وتطوير </span>
+    <div class="shiny-name">Ismail Ahmed Alrady</div>
+    <div style="font-size:0.75rem; opacity:0.7;">
+        <a href="https://github.com/asmaylalrdy" style="color:white; text-decoration:none;">🔗 GitHub: asmaylalrdy</a>
     </div>
 </div>
 
 <script>
     let tasks = JSON.parse(localStorage.getItem('rady_notes')) || [];
     let currentLang = 'ar';
-    let audioEnabled = false;
+    let audioCtx = null;
 
-    // تهيئة الصوت والاشعارات
-    function enableAudio() {
-        if (!audioEnabled) {
-            const context = new (window.AudioContext || window.webkitAudioContext)();
-            if (context.state === 'suspended') context.resume();
-            audioEnabled = true;
-            console.log("Audio Enabled");
+    function initAudio() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
-        if ("Notification" in window && Notification.permission !== 'granted') {
-            Notification.requestPermission();
-        }
+        if (Notification.permission !== 'granted') Notification.requestPermission();
     }
 
     const translations = {
-        ar: {
-            title: "🚀 Rady Note", placeholder: "اكتب ملاحظة ذكية...",
-            save: "حفظ الملاحظة 💾", langBtn: "EN", dir: "rtl",
-            footerBy: "بإشراف وتطوير المهندس", noTime: "بدون وقت",
-            shareMsg: "جرب تطبيق Rady Note لتنظيم ملاحظاتك: "
-        },
-        en: {
-            title: "🚀 Rady Note", placeholder: "Write a note...",
-            save: "Save Note 💾", langBtn: "AR", dir: "ltr",
-            footerBy: "Developed by", noTime: "No time",
-            shareMsg: "Try Rady Note App: "
-        }
+        ar: { title: "Rady Note 🚀", save: "حفظ 💾", langBtn: "EN", dir: "rtl", noTime: "بدون وقت" },
+        en: { title: "Rady Note 🚀", save: "Save 💾", langBtn: "AR", dir: "ltr", noTime: "No time" }
     };
 
     function toggleLanguage() {
         currentLang = currentLang === 'ar' ? 'en' : 'ar';
-        const langData = translations[currentLang];
-        document.getElementById('htmlPage').dir = langData.dir;
-        document.getElementById('appTitle').innerText = langData.title;
-        document.getElementById('taskInput').placeholder = langData.placeholder;
-        document.getElementById('add-btn').innerText = langData.save;
-        document.getElementById('langBtn').innerText = langData.langBtn;
-        document.getElementById('footerDevBy').innerText = langData.footerBy;
+        document.getElementById('htmlPage').dir = translations[currentLang].dir;
+        document.getElementById('add-btn').innerText = translations[currentLang].save;
+        document.getElementById('langBtn').innerText = translations[currentLang].langBtn;
         renderTasks();
     }
 
     function addTask() {
+        initAudio(); // تفعيل الصوت عند كل إضافة
         const text = document.getElementById('taskInput').value;
         const time = document.getElementById('taskTime').value;
         if (!text) return;
         tasks.push({ id: Date.now(), text, time, notified: false });
         saveAndRender();
         document.getElementById('taskInput').value = '';
-    }
-
-    function deleteTask(id) {
-        tasks = tasks.filter(t => t.id !== id);
-        saveAndRender();
     }
 
     function saveAndRender() {
@@ -214,11 +209,11 @@
         
         tasks.sort((a,b) => new Date(a.time) - new Date(b.time)).forEach(task => {
             const li = document.createElement('li');
-            const displayTime = task.time ? new Date(task.time).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US') : translations[currentLang].noTime;
+            const displayTime = task.time ? new Date(task.time).toLocaleString() : translations[currentLang].noTime;
             li.innerHTML = `
                 <div class="task-header">
                     <span class="task-text">${task.text}</span>
-                    <button class="delete-btn" onclick="deleteTask(${task.id})">🗑️</button>
+                    <span onclick="deleteTask(${task.id})" style="color:red; cursor:pointer;">🗑️</span>
                 </div>
                 <span class="task-time">⏰ ${displayTime}</span>
             `;
@@ -226,15 +221,27 @@
         });
     }
 
+    function deleteTask(id) {
+        tasks = tasks.filter(t => t.id !== id);
+        saveAndRender();
+    }
+
+    function playAlarm() {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain); gain.connect(audioCtx.destination);
+        osc.frequency.value = 1000;
+        osc.start(); osc.stop(audioCtx.currentTime + 1.5);
+    }
+
     function checkAlarms() {
         const now = new Date().getTime();
         tasks.forEach(task => {
             if (task.time && !task.notified) {
                 if (now >= new Date(task.time).getTime()) {
-                    if (Notification.permission === 'granted') {
-                        new Notification("Rady Note 🔔", { body: task.text });
-                    }
                     playAlarm();
+                    if (Notification.permission === 'granted') new Notification("Rady Note", { body: task.text });
                     task.notified = true;
                     saveAndRender();
                 }
@@ -242,34 +249,13 @@
         });
     }
 
-    function playAlarm() {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.frequency.value = 880; gain.gain.value = 0.5;
-        osc.start(); osc.stop(audioCtx.currentTime + 1);
+    function exportToPDF() {
+        const element = document.getElementById('appContent');
+        html2pdf().from(element).set({ margin: 5, filename: 'Rady_Note.pdf' }).save();
     }
 
     function shareApp() {
-        const url = window.location.href;
-        if (navigator.share) {
-            navigator.share({ title: 'Rady Note', text: translations[currentLang].shareMsg, url: url });
-        } else {
-            alert(translations[currentLang].shareMsg + url);
-        }
-    }
-
-    function exportToPDF() {
-        const element = document.getElementById('appContent');
-        const opt = { 
-            margin: 5, 
-            filename: 'Rady_Notes.pdf', 
-            image: { type: 'jpeg', quality: 0.98 }, 
-            html2canvas: { scale: 3 }, 
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } 
-        };
-        html2pdf().set(opt).from(element).save();
+        if (navigator.share) navigator.share({ title: 'Rady Note', url: window.location.href });
     }
 
     setInterval(checkAlarms, 1000);
