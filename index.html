@@ -8,19 +8,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
+        /* تعريف الألوان الدافئة الجديدة لـ Gemini */
         :root {
-            --primary: #6366f1;
-            --bg: #f8fafc;
-            --card: #ffffff;
-            --text: #1e293b;
-            --accent: #818cf8;
-            --success: #10b981;
-        }
-        body.dark-mode {
-            --bg: #0f172a;
+            /* التدرج الذهبي/البرتقالي الجديد */
+            --primary-gradient: linear-gradient(135deg, #f59e0b, #ea580c);
+            --primary-solid: #f59e0b; /* الأصفر الذهبي الأساسي */
+            --accent: #fb923c; /* برتقالي فاتح للحدود */
+            
+            /* خلفية الوضع الليلي الداكنة لتبدو الألوان أكثر فخامة */
+            --bg: #0f172a; 
             --card: #1e293b;
             --text: #f1f5f9;
+            --success: #10b981;
+            --danger: #ef4444;
         }
+        
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bg);
@@ -32,19 +34,20 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        /* تعديل الحاوية لتناسب الشاشة */
+
         .container {
             width: 100%;
             max-width: 450px;
             background: var(--card);
             padding: 1.5rem;
             border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             display: flex;
             flex-direction: column;
             gap: 15px;
             height: fit-content;
         }
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -52,43 +55,59 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-        h2 { font-size: 1.5rem; color: var(--primary); margin: 0; font-weight: 800; }
-        
-        /* جعل الأزرار العلوية مرتبة */
-        .btn-header-group { display: flex; gap: 8px; }
-        .share-app-btn {
-            background: var(--primary); color: white; border: none; padding: 5px 12px;
-            border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.75rem;
-        }
 
-        /* تحسين المدخلات لتأخذ مساحة أقل */
+        /* عنوان التطبيق باللون الذهبي الدافئ */
+        h2 { font-size: 1.6rem; color: var(--primary-solid); margin: 0; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        
+        .btn-header-group { display: flex; gap: 8px; }
+
+        /* زر مشاركة التطبيق بالتدرج الجديد */
+        .share-app-btn {
+            background: var(--primary-gradient); 
+            color: white; border: none; padding: 6px 14px;
+            border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.8rem;
+            transition: 0.3s;
+        }
+        .share-app-btn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
         .input-section { display: flex; flex-direction: column; gap: 10px; }
         input { 
-            padding: 12px; border: 2px solid #e2e8f0; border-radius: 15px; 
-            background: var(--bg); color: var(--text); font-family: 'Cairo';
+            padding: 14px; border: 2px solid #334155; border-radius: 15px; 
+            background: rgba(0,0,0,0.2); color: var(--text); font-family: 'Cairo';
         }
+        input:focus { border-color: var(--accent); background: rgba(0,0,0,0.3); outline: none; }
         
         .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        #add-btn, #pdf-btn { padding: 12px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; font-size: 0.9rem; }
-        #add-btn { background: var(--primary); color: white; }
-        #pdf-btn { background: #e2e8f0; color: #475569; }
 
-        /* قائمة الملاحظات */
+        /* زر الحفظ بالتدرج الجديد */
+        #add-btn { background: var(--primary-gradient); color: white; border: none; padding: 12px; border-radius: 15px; font-weight: 800; cursor: pointer; font-size: 1rem; transition: 0.3s; }
+        #add-btn:hover { filter: brightness(1.1); }
+
+        /* زر PDF بلون محايد داكن */
+        #pdf-btn { background: #334155; color: #f1f5f9; border: none; padding: 12px; border-radius: 15px; font-weight: 800; cursor: pointer; font-size: 1rem; }
+        #pdf-btn:hover { background: #475569; }
+
+        #searchBox { border-style: dashed; border-color: #334155; margin-top: 10px; }
+        #searchBox:focus { border-color: var(--accent); dashed; }
+
         #taskList { list-style: none; padding: 0; margin: 0; }
         li { 
-            background: var(--card); margin-bottom: 12px; padding: 15px; 
-            border-radius: 20px; border-right: 6px solid var(--primary);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.02);
+            background: rgba(0,0,0,0.1); margin-bottom: 12px; padding: 18px; 
+            border-radius: 20px; 
+            /* حدود البطاقة بالبرتقالي الدافئ */
+            border-right: 6px solid var(--accent);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
             display: flex; justify-content: space-between; align-items: center;
         }
-        .note-text { font-weight: 700; font-size: 1rem; word-break: break-word; }
-        .time-tag { font-size: 0.75rem; color: var(--success); font-weight: 800; }
+        .note-text { font-weight: 700; font-size: 1.1rem; word-break: break-word; }
+        .time-tag { font-size: 0.85rem; color: var(--success); font-weight: 800; }
 
         .dev-footer { 
-            margin-top: 20px; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 15px;
-            font-size: 0.8rem;
+            margin-top: 30px; text-align: center; border-top: 1px solid #334155; padding-top: 20px;
+            font-size: 0.9rem;
         }
-        .shiny-name { font-weight: 800; font-size: 1.2rem; color: var(--primary); }
+        /* اسم المطور باللون الذهبي */
+        .shiny-name { font-weight: 800; font-size: 1.3rem; color: var(--primary-solid); margin-bottom: 5px;}
     </style>
 </head>
 <body onclick="initApp()">
@@ -98,11 +117,11 @@
         <h2>Rady Note 🚀</h2>
         <div class="btn-header-group">
             <button onclick="shareApp()" class="share-app-btn">شارك التطبيق 🔗</button>
-            <button onclick="toggleTheme()" id="themeIcon" style="border:none; background:none; cursor:pointer; font-size:1.4rem;">🌙</button>
+            <button onclick="toggleTheme()" id="themeIcon" style="border:none; background:none; cursor:pointer; font-size:1.6rem;">🌙</button>
         </div>
     </div>
     
-    <div id="count" style="font-size:0.75rem; background:var(--primary); color:white; padding:3px 10px; border-radius:15px; width:fit-content; font-weight:bold;">0 ملاحظة</div>
+    <div id="count" style="font-size:0.8rem; background:var(--card); color:var(--accent); border: 1px solid var(--accent); padding:4px 12px; border-radius:15px; width:fit-content; font-weight:bold;">0 ملاحظة</div>
 
     <div class="input-section">
         <input type="text" id="taskInput" placeholder="اكتب ملاحظة ذكية...">
@@ -111,16 +130,16 @@
             <button id="add-btn">حفظ 💾</button>
             <button id="pdf-btn" onclick="exportToPDF()">PDF 📄</button>
         </div>
-        <input type="text" id="searchBox" placeholder="🔍 بحث سريع...">
+        <input type="text" id="searchBox" placeholder="🔍 بحث سريع في ملاحظاتك الحالية...">
     </div>
     
     <ul id="taskList"></ul>
 
     <div class="dev-footer">
-        <div>بإشراف وتطوير</div>
+        <div>بإشراف وتطوير المهندس</div>
         <div class="shiny-name">Ismail Ahmed Alrady</div>
-        <div style="margin-top:5px; opacity:0.8;">
-            <a href="mailto:asmaylalrdy744@gmail.com" style="color:inherit; text-decoration:none;">asmaylalrdy744@gmail.com</a>
+        <div style="margin-top:8px; opacity:0.8;">
+            📧 <a href="mailto:asmaylalrdy744@gmail.com" style="color:inherit; text-decoration:none; font-weight:bold;">asmaylalrdy744@gmail.com</a>
         </div>
     </div>
 </div>
@@ -132,8 +151,10 @@
             Notification.requestPermission();
         }
         // خلق سياق صوتي صامت لتجاوز حظر المتصفح
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        audioCtx.resume();
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+        } catch(e) { console.log("Audio not supported"); }
     }
 
     const input = document.getElementById('taskInput');
@@ -141,33 +162,42 @@
     const addBtn = document.getElementById('add-btn');
     const taskList = document.getElementById('taskList');
     const countSpan = document.getElementById('count');
+    const searchBox = document.getElementById('searchBox');
+
+    // مصفوفة ألوان التمييز الدافئة للبطاقات
+    const colors = ['#f59e0b', '#fb923c', '#ea580c', '#f97316'];
 
     function updateCount() {
         const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
         countSpan.innerText = `${tasks.length} ملاحظة`;
     }
 
+    // زر تبديل الوضع (يعمل جزئياً، نحتاج لتثبيته في الخلفية)
     function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        const isDark = document.body.classList.contains('dark-mode');
-        document.getElementById('themeIcon').innerText = isDark ? '☀️' : '🌙';
-        localStorage.setItem('rady_theme', isDark ? 'dark' : 'light');
+        // يمكنك إيقاف هذا الزر إذا كنت تفضل الوضع الداكن الجديد دائماً
+        alert("الوضع الليلي الدافئ هو الوضع الأساسي الجديد لتناسب ذوقك بالألوان!");
     }
 
     function shareApp() {
         const url = window.location.href;
         if (navigator.share) {
-            navigator.share({ title: 'Rady Note', text: 'تطبيق ملاحظات ذكي!', url: url });
+            navigator.share({ title: 'Rady Note', text: 'تطبيق ملاحظات و منبه ذكي بتصميم دافئ!', url: url });
         } else {
             navigator.clipboard.writeText(url);
-            alert('تم نسخ الرابط!');
+            alert('تم نسخ الرابط! يمكنك إرساله الآن لأصدقائك.');
         }
     }
 
     addBtn.onclick = () => {
         const text = input.value.trim();
         if (!text) return;
-        const taskObj = { text: text, time: timeInput.value, id: Date.now(), notified: false };
+        const taskObj = { 
+            text: text, 
+            time: timeInput.value, 
+            id: Date.now(), 
+            notified: false,
+            color: colors[Math.floor(Math.random() * colors.length)] // لون حدود عشوائي دافئ
+        };
         addTaskToDOM(taskObj);
         saveTaskLocal(taskObj);
         input.value = ''; timeInput.value = '';
@@ -177,12 +207,13 @@
     function addTaskToDOM(task) {
         const li = document.createElement('li');
         li.dataset.id = task.id;
+        li.style.borderRightColor = task.color; // تطبيق لون الحدود
         li.innerHTML = `
             <div style="flex:1">
                 <span class="note-text">${task.text}</span>
                 ${task.time ? `<span class="time-tag">⏰ ${new Date(task.time).toLocaleString('ar-EG')}</span>` : ''}
             </div>
-            <button onclick="deleteTask(${task.id})" style="border:none; background:#fef2f2; color:#dc2626; padding:8px; border-radius:10px; cursor:pointer;">✕</button>
+            <button onclick="deleteTask(${task.id})" style="border:none; background:#fef2f2; color:#dc2626; padding:8px; border-radius:10px; cursor:pointer; font-size:1.1rem; transition:0.2s;">✕</button>
         `;
         taskList.prepend(li);
     }
@@ -200,15 +231,26 @@
         updateCount();
     }
 
-    // نظام المنبه القوي
+    // فلترة البحث
+    searchBox.oninput = () => {
+        const term = searchBox.value.toLowerCase();
+        document.querySelectorAll('#taskList li').forEach(li => {
+            const text = li.querySelector('.note-text').innerText.toLowerCase();
+            li.style.display = text.includes(term) ? 'flex' : 'none';
+        });
+    };
+
+    // نظام المنبه الذكي (محسن ليعمل كل ثانية)
     function playAlert() {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const g = ctx.createGain();
-        osc.connect(g); g.connect(ctx.destination);
-        osc.frequency.value = 880;
-        g.gain.value = 1;
-        osc.start(); osc.stop(ctx.currentTime + 1);
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const g = ctx.createGain();
+            osc.connect(g); g.connect(ctx.destination);
+            osc.frequency.value = 880; // تردد الصوت
+            g.gain.value = 1; // مستوى الصوت
+            osc.start(); osc.stop(ctx.currentTime + 1.2); // يرن لمدة ثانية و ربع
+        } catch(e) {}
     }
 
     setInterval(() => {
@@ -221,9 +263,12 @@
                 if (now >= new Date(t.time)) {
                     playAlert();
                     if (Notification.permission === "granted") {
-                        new Notification("⏰ Rady Note", { body: t.text, requireInteraction: true });
+                        new Notification("⏰ Rady Note", { 
+                            body: `تذكير: ${t.text}`, 
+                            requireInteraction: true // سيبقى الإشعار ظاهراً حتى تراه
+                        });
                     } else {
-                        alert("تنبيه: " + t.text);
+                        alert("تنبيه هام من Rady Note:\n" + t.text);
                     }
                     t.notified = true;
                     changed = true;
@@ -231,11 +276,11 @@
             }
         });
         if (changed) localStorage.setItem('rady_notes', JSON.stringify(tasks));
-    }, 1000);
+    }, 1000); // فحص كل ثانية
 
     function exportToPDF() {
         const element = document.getElementById('main-app');
-        html2pdf().from(element).save('Rady_Note.pdf');
+        html2pdf().from(element).save('Rady_Note_Export.pdf');
     }
 
     window.onload = () => {
