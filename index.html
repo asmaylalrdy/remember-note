@@ -1,216 +1,273 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" id="htmlPage">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rady Note 🚀</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Rady Note 📝</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
-            --gold: #f59e0b; --dark-blue: #0f172a; --card-blue: #1e293b;
-            --white: #f1f5f9; --orange: #ea580c;
+            --primary-gradient: linear-gradient(135deg, #f59e0b, #ea580c);
+            --primary-solid: #f59e0b;
+            --accent: #fb923c;
+            --bg: #0f172a; 
+            --card: #1e293b;
+            --text: #f1f5f9;
+            --success: #10b981;
+            --danger: #ef4444;
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
-
+        
         body {
             font-family: 'Cairo', sans-serif;
-            background-color: var(--dark-blue);
-            color: var(--white);
-            height: 100vh; width: 100vw;
-            display: flex; flex-direction: column;
-            overflow: hidden; /* منع تمدد الجسم */
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .main-wrapper {
-            flex: 1; display: flex; flex-direction: column;
-            width: 100%; max-width: 480px; margin: 0 auto;
-            padding: 15px; gap: 10px;
+        .container {
+            width: 100%;
+            max-width: 450px;
+            background: var(--card);
+            padding: 1.5rem;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: fit-content;
         }
 
-        /* الجزء العلوي الثابت */
-        .top-nav {
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        h2 { font-size: 1.6rem; color: var(--primary-solid); margin: 0; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        
+        .btn-header-group { display: flex; gap: 8px; }
+
+        .share-app-btn {
+            background: var(--primary-gradient); 
+            color: white; border: none; padding: 6px 14px;
+            border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .input-section { display: flex; flex-direction: column; gap: 10px; }
+        input { 
+            padding: 14px; border: 2px solid #334155; border-radius: 15px; 
+            background: rgba(0,0,0,0.2); color: var(--text); font-family: 'Cairo';
+        }
+        
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+        #add-btn { background: var(--primary-gradient); color: white; border: none; padding: 12px; border-radius: 15px; font-weight: 800; cursor: pointer; font-size: 1rem; transition: 0.3s; }
+        #pdf-btn { background: #334155; color: #f1f5f9; border: none; padding: 12px; border-radius: 15px; font-weight: 800; cursor: pointer; font-size: 1rem; }
+
+        #taskList { list-style: none; padding: 0; margin: 0; }
+        li { 
+            background: rgba(0,0,0,0.1); margin-bottom: 12px; padding: 18px; 
+            border-radius: 20px; border-right: 6px solid var(--accent);
             display: flex; justify-content: space-between; align-items: center;
-            background: var(--card-blue); padding: 10px 15px;
-            border-radius: 20px; flex-shrink: 0;
+            animation: fadeIn 0.3s ease;
         }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .nav-tools { display: flex; gap: 10px; }
+        .note-text { font-weight: 700; font-size: 1.1rem; word-break: break-word; }
+        .time-tag { font-size: 0.85rem; color: var(--success); font-weight: 800; display: block; }
 
-        .btn-tool {
-            background: rgba(255,255,255,0.1); border: 1px solid var(--gold);
-            color: white; border-radius: 12px; padding: 8px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; width: 42px; height: 42px;
+        .dev-footer { 
+            margin-top: 30px; text-align: center; border-top: 1px solid #334155; padding-top: 20px;
+            font-size: 0.9rem;
         }
-
-        .stats-circle {
-            background: var(--gold); color: var(--dark-blue);
-            width: 30px; height: 30px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900;
-        }
-
-        /* منطقة الإدخال الثابتة */
-        .input-box {
-            background: var(--card-blue); padding: 15px;
-            border-radius: 25px; display: flex; flex-direction: column;
-            gap: 10px; flex-shrink: 0;
-        }
-
-        input {
-            width: 100%; padding: 12px; border-radius: 12px;
-            border: 2px solid #334155; background: #0f172a;
-            color: white; font-family: 'Cairo'; outline: none;
-        }
-
-        #add-btn {
-            background: linear-gradient(to right, var(--gold), var(--orange));
-            border: none; padding: 12px; border-radius: 12px;
-            color: white; font-weight: 800; font-size: 1.1rem;
-        }
-
-        /* منطقة القائمة القابلة للتمرير */
-        .scroll-area {
-            flex: 1; overflow-y: auto;
-            padding-bottom: 10px;
-        }
-
-        .task-card {
-            background: rgba(255,255,255,0.05); border-right: 5px solid var(--gold);
-            padding: 15px; border-radius: 15px; margin-bottom: 10px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-
-        .task-info h4 { font-size: 1rem; margin-bottom: 5px; }
-        .task-info span { font-size: 0.8rem; color: var(--gold); }
-
-        /* التذييل الثابت */
-        footer {
-            text-align: center; padding: 10px; font-size: 0.8rem;
-            border-top: 1px solid #334155; flex-shrink: 0;
-        }
+        .shiny-name { font-weight: 800; font-size: 1.3rem; color: var(--primary-solid); margin-bottom: 5px;}
+        .footer-link { color: inherit; text-decoration: none; font-weight: bold; opacity: 0.8; transition: 0.3s; }
+        .footer-link:hover { opacity: 1; color: var(--accent); }
     </style>
 </head>
-<body onclick="startAudio()">
+<body onclick="initApp()">
 
-<div class="main-wrapper">
-    <div class="top-nav">
-        <div class="stats-circle" id="counter">0</div>
-        <div class="nav-tools">
-            <button class="btn-tool" onclick="toggleLang()" id="langBtn" style="font-size:0.8rem; font-weight:bold;">EN</button>
-            <button class="btn-tool" onclick="shareApp()">🔗</button>
-            <button class="btn-tool" onclick="savePDF()" id="pdfBtn">📥</button>
+<div class="container" id="main-app">
+    <div class="header">
+        <h2>Rady Note 🚀</h2>
+        <div class="btn-header-group">
+            <button onclick="shareApp()" class="share-app-btn">شارك التطبيق 🔗</button>
+            <span style="font-size:1.6rem;">🌙</span>
         </div>
     </div>
+    
+    <div id="count" style="font-size:0.8rem; background:var(--card); color:var(--accent); border: 1px solid var(--accent); padding:4px 12px; border-radius:15px; width:fit-content; font-weight:bold;">0 ملاحظة</div>
 
-    <div class="input-box" id="pdfHeader">
-        <h2 style="text-align:center; color:var(--gold);" id="appTitle">رادي نوت 🚀</h2>
-        <input type="text" id="noteInput" placeholder="اكتب ملاحظة...">
-        <input type="datetime-local" id="noteTime">
-        <button id="add-btn" onclick="addNote()">حفظ الملاحظة 💾</button>
-    </div>
-
-    <div class="scroll-area" id="noteList">
+    <div class="input-section">
+        <input type="text" id="taskInput" placeholder="اكتب ملاحظة ذكية...">
+        <input type="datetime-local" id="taskTime">
+        <div class="btn-group">
+            <button id="add-btn">حفظ 💾</button>
+            <button id="pdf-btn" onclick="exportToPDF()">PDF 📄</button>
         </div>
+        <input type="text" id="searchBox" placeholder="🔍 بحث سريع في ملاحظاتك الحالية...">
+    </div>
+    
+    <ul id="taskList"></ul>
 
-    <footer>
-        <p id="devText">بإشراف وتطوير المهندس</p>
-        <strong style="color:var(--gold);">Ismail Ahmed Alrady</strong>
-    </footer>
+    <div class="dev-footer">
+        <div>بإشراف وتطوير </div>
+        <div class="shiny-name">Ismail Ahmed Alrady</div>
+        <div style="margin-top:8px; display: flex; flex-direction: column; gap: 5px;">
+            <a href="mailto:asmaylalrdy744@gmail.com" class="footer-link">📧 asmaylalrdy744@gmail.com</a>
+            <a href="https://github.com/asmaylalrdy" target="_blank" class="footer-link">🔗 GitHub: asmaylalrdy</a>
+        </div>
+    </div>
 </div>
 
 <script>
-    let notes = JSON.parse(localStorage.getItem('rady_notes_v6')) || [];
-    let isAr = true;
-    let audioCtx = null;
-
-    function startAudio() {
-        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        if (Notification.permission !== 'granted') Notification.requestPermission();
+    function initApp() {
+        if ("Notification" in window && Notification.permission === "default") {
+            Notification.requestPermission();
+        }
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+        } catch(e) { console.log("Audio not supported"); }
     }
 
-    function addNote() {
-        startAudio();
-        const text = document.getElementById('noteInput').value;
-        const time = document.getElementById('noteTime').value;
-        if (!text) return;
-        notes.push({ id: Date.now(), text, time, done: false });
-        update();
-        document.getElementById('noteInput').value = '';
-    }
+    const input = document.getElementById('taskInput');
+    const timeInput = document.getElementById('taskTime');
+    const addBtn = document.getElementById('add-btn');
+    const taskList = document.getElementById('taskList');
+    const countSpan = document.getElementById('count');
+    const searchBox = document.getElementById('searchBox');
 
-    function update() {
-        localStorage.setItem('rady_notes_v6', JSON.stringify(notes));
-        render();
-    }
+    const colors = ['#f59e0b', '#fb923c', '#ea580c', '#f97316'];
 
-    function render() {
-        const list = document.getElementById('noteList');
-        list.innerHTML = '';
-        document.getElementById('counter').innerText = notes.length;
-        
-        notes.sort((a,b) => new Date(a.time) - new Date(b.time)).forEach(note => {
-            const div = document.createElement('div');
-            div.className = 'task-card';
-            div.innerHTML = `
-                <div class="task-info">
-                    <h4>${note.text}</h4>
-                    <span>⏰ ${note.time ? new Date(note.time).toLocaleString() : (isAr?'بدون وقت':'No Time')}</span>
-                </div>
-                <button onclick="deleteNote(${note.id})" style="background:none; border:none; font-size:1.2rem;">🗑️</button>
-            `;
-            list.appendChild(div);
-        });
-    }
-
-    function deleteNote(id) {
-        notes = notes.filter(n => n.id !== id);
-        update();
-    }
-
-    function toggleLang() {
-        isAr = !isAr;
-        document.getElementById('htmlPage').dir = isAr ? 'rtl' : 'ltr';
-        document.getElementById('langBtn').innerText = isAr ? 'EN' : 'AR';
-        document.getElementById('appTitle').innerText = isAr ? 'رادي نوت 🚀' : 'Rady Note 🚀';
-        document.getElementById('noteInput').placeholder = isAr ? 'اكتب ملاحظة...' : 'Write a note...';
-        document.getElementById('add-btn').innerText = isAr ? 'حفظ الملاحظة 💾' : 'Save Note 💾';
-        document.getElementById('devText').innerText = isAr ? 'بإشراف وتطوير المهندس' : 'Developed by';
-        render();
-    }
-
-    function savePDF() {
-        const element = document.body;
-        html2pdf().from(element).set({ margin: 10, filename: 'RadyNote.pdf' }).save();
+    function updateCount() {
+        const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
+        countSpan.innerText = `${tasks.length} ملاحظة`;
     }
 
     function shareApp() {
-        if (navigator.share) navigator.share({ title: 'Rady Note', url: window.location.href });
+        const url = window.location.href;
+        if (navigator.share) {
+            navigator.share({ title: 'Rady Note', text: 'تطبيق ملاحظات و منبه ذكي بتصميم دافئ!', url: url });
+        } else {
+            navigator.clipboard.writeText(url);
+            alert('تم نسخ الرابط! يمكنك إرساله الآن لأصدقائك.');
+        }
     }
 
-    function checkAlarms() {
-        const now = new Date().getTime();
-        notes.forEach(n => {
-            if (n.time && !n.done && now >= new Date(n.time).getTime()) {
-                if (audioCtx) {
-                    const osc = audioCtx.createOscillator();
-                    const g = audioCtx.createGain();
-                    osc.connect(g); g.connect(audioCtx.destination);
-                    osc.frequency.value = 880; g.gain.value = 0.5;
-                    osc.start(); osc.stop(audioCtx.currentTime + 1);
+    addBtn.onclick = () => {
+        const text = input.value.trim();
+        if (!text) return;
+        const taskObj = { 
+            text: text, 
+            time: timeInput.value, 
+            id: Date.now(), 
+            notified: false,
+            color: colors[Math.floor(Math.random() * colors.length)]
+        };
+        addTaskToDOM(taskObj);
+        saveTaskLocal(taskObj);
+        input.value = ''; timeInput.value = '';
+        updateCount();
+    };
+
+    function addTaskToDOM(task) {
+        const li = document.createElement('li');
+        li.dataset.id = task.id;
+        li.style.borderRightColor = task.color;
+        li.innerHTML = `
+            <div style="flex:1">
+                <span class="note-text">${task.text}</span>
+                ${task.time ? `<span class="time-tag">⏰ ${new Date(task.time).toLocaleString('ar-EG')}</span>` : ''}
+            </div>
+            <button onclick="deleteTask(${task.id})" style="border:none; background:#fef2f2; color:#dc2626; padding:8px; border-radius:10px; cursor:pointer; font-size:1.1rem; transition:0.2s;">✕</button>
+        `;
+        taskList.prepend(li);
+    }
+
+    function saveTaskLocal(task) {
+        let tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
+        tasks.push(task);
+        localStorage.setItem('rady_notes', JSON.stringify(tasks));
+    }
+
+    function deleteTask(id) {
+        const el = document.querySelector(`[data-id="${id}"]`);
+        if(el) el.remove();
+        let tasks = JSON.parse(localStorage.getItem('rady_notes'));
+        localStorage.setItem('rady_notes', JSON.stringify(tasks.filter(t => t.id !== id)));
+        updateCount();
+    }
+
+    searchBox.oninput = () => {
+        const term = searchBox.value.toLowerCase();
+        document.querySelectorAll('#taskList li').forEach(li => {
+            const text = li.querySelector('.note-text').innerText.toLowerCase();
+            li.style.display = text.includes(term) ? 'flex' : 'none';
+        });
+    };
+
+    function playAlert() {
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const g = ctx.createGain();
+            osc.connect(g); g.connect(ctx.destination);
+            osc.frequency.value = 880;
+            g.gain.value = 1;
+            osc.start(); osc.stop(ctx.currentTime + 1.2);
+        } catch(e) {}
+    }
+
+    setInterval(() => {
+        const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
+        const now = new Date();
+        let changed = false;
+
+        tasks.forEach(t => {
+            if (t.time && !t.notified) {
+                if (now >= new Date(t.time)) {
+                    playAlert();
+                    if (Notification.permission === "granted") {
+                        new Notification("⏰ Rady Note", { body: `تذكير: ${t.text}`, requireInteraction: true });
+                    } else {
+                        alert("تنبيه من Rady Note:\n" + t.text);
+                    }
+                    t.notified = true;
+                    changed = true;
                 }
-                if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
-                if (Notification.permission === 'granted') new Notification("Rady Note 🔔", { body: n.text });
-                n.done = true;
-                update();
             }
         });
+        if (changed) localStorage.setItem('rady_notes', JSON.stringify(tasks));
+    }, 1000);
+
+    function exportToPDF() {
+        const element = document.getElementById('main-app');
+        const opt = {
+            margin: 0.5,
+            filename: 'Rady_Note_Export.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+        html2pdf().set(opt).from(element).save();
     }
 
-    setInterval(checkAlarms, 1000);
-    render();
+    window.onload = () => {
+        const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
+        tasks.forEach(t => addTaskToDOM(t));
+        updateCount();
+    };
 </script>
 </body>
 </html>
