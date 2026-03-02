@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rady Note 📝</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📝</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
@@ -15,88 +14,68 @@
             --bg: #0f172a; 
             --card: #1e293b;
             --text: #f1f5f9;
-            --success: #10b981;
-            --danger: #ef4444;
         }
         
         body {
             font-family: 'Cairo', sans-serif;
             background-color: var(--bg);
             color: var(--text);
-            margin: 0;
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-            height: 100vh; /* تحديد ارتفاع الجسم */
-            overflow: hidden; /* منع التمرير في الصفحة ككل */
+            margin: 0; padding: 10px;
+            display: flex; justify-content: center;
+            min-height: 100vh;
         }
 
         .container {
-            width: 100%;
-            max-width: 450px;
+            width: 100%; max-width: 450px;
             background: var(--card);
-            padding: 1.2rem;
-            border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
-            display: flex;
-            flex-direction: column;
-            max-height: 95vh; /* منع التمدد خارج الشاشة */
+            padding: 1.5rem; border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            display: flex; flex-direction: column; gap: 15px;
+            /* منع التمدد اللانهائي */
+            max-height: 95vh; 
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            flex-shrink: 0;
-        }
-
-        h2 { font-size: 1.4rem; color: var(--primary-solid); margin: 0; font-weight: 800; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        h2 { font-size: 1.6rem; color: var(--primary-solid); margin: 0; font-weight: 800; }
         
         .share-app-btn {
-            background: var(--primary-gradient); 
-            color: white; border: none; padding: 6px 14px;
-            border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 0.8rem;
+            background: var(--primary-gradient); color: white; border: none; 
+            padding: 6px 14px; border-radius: 10px; font-weight: bold; cursor: pointer;
         }
 
-        .input-section { display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
-        
+        .input-section { display: flex; flex-direction: column; gap: 10px; }
         input { 
-            padding: 12px; border: 2px solid #334155; border-radius: 12px; 
+            padding: 14px; border: 2px solid #334155; border-radius: 15px; 
             background: rgba(0,0,0,0.2); color: var(--text); font-family: 'Cairo';
         }
-
+        
         .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-        #add-btn { background: var(--primary-gradient); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: 800; cursor: pointer; }
-        #pdf-btn { background: #334155; color: #f1f5f9; border: none; padding: 12px; border-radius: 12px; font-weight: 800; cursor: pointer; }
+        #add-btn { background: var(--primary-gradient); color: white; border: none; padding: 12px; border-radius: 15px; font-weight: 800; cursor: pointer; }
+        #pdf-btn { background: #334155; color: #f1f5f9; border: none; padding: 12px; border-radius: 15px; font-weight: 800; cursor: pointer; }
 
-        /* منطقة القائمة القابلة للتمرير */
+        /* تعديل القائمة لتكون قابلة للتمرير */
         #taskList { 
-            list-style: none; 
-            padding: 0; 
-            margin-top: 15px;
-            overflow-y: auto; /* تفعيل التمرير هنا فقط */
-            flex-grow: 1;
+            list-style: none; padding: 0; margin: 0; 
+            overflow-y: auto; flex-grow: 1; 
         }
 
         li { 
-            background: rgba(255,255,255,0.05); margin-bottom: 10px; padding: 15px; 
-            border-radius: 15px; border-right: 5px solid var(--accent);
+            background: rgba(0,0,0,0.1); margin-bottom: 12px; padding: 18px; 
+            border-radius: 20px; border-right: 6px solid var(--accent);
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .note-text { font-weight: 700; font-size: 1rem; }
-        .time-tag { font-size: 0.8rem; color: var(--success); font-weight: bold; display: block; }
+        .note-text { font-weight: 700; font-size: 1.1rem; }
+        .time-tag { font-size: 0.85rem; color: #10b981; font-weight: 800; display: block; }
 
         .dev-footer { 
-            margin-top: 10px; text-align: center; border-top: 1px solid #334155; padding-top: 10px;
-            flex-shrink: 0;
+            margin-top: 20px; text-align: center; border-top: 1px solid #334155; padding-top: 15px;
         }
-        .shiny-name { font-weight: 800; font-size: 1.1rem; color: var(--primary-solid); }
+        .shiny-name { font-weight: 800; font-size: 1.3rem; color: var(--primary-solid); }
     </style>
 </head>
-<body onclick="enableAudio()">
+<body onclick="initAudio()">
 
 <div class="container" id="main-app">
     <div class="header">
@@ -104,13 +83,13 @@
         <button onclick="shareApp()" class="share-app-btn">شارك التطبيق 🔗</button>
     </div>
     
-    <div id="count" style="font-size:0.7rem; color:var(--accent); border: 1px solid var(--accent); padding:2px 10px; border-radius:10px; width:fit-content; font-weight:bold;">0 ملاحظة</div>
+    <div id="count" style="font-size:0.8rem; color:var(--accent); border: 1px solid var(--accent); padding:4px 12px; border-radius:15px; width:fit-content; font-weight:bold;">0 ملاحظة</div>
 
     <div class="input-section">
         <input type="text" id="taskInput" placeholder="اكتب ملاحظة ذكية...">
         <input type="datetime-local" id="taskTime">
         <div class="btn-group">
-            <button id="add-btn" onclick="addNote()">حفظ 💾</button>
+            <button id="add-btn" onclick="saveTask()">حفظ 💾</button>
             <button id="pdf-btn" onclick="exportToPDF()">PDF 📄</button>
         </div>
         <input type="text" id="searchBox" placeholder="🔍 بحث سريع...">
@@ -119,10 +98,10 @@
     <ul id="taskList"></ul>
 
     <div class="dev-footer">
-        <div style="font-size: 0.8rem;">بإشراف وتطوير </div>
+        <div>بإشراف وتطوير </div>
         <div class="shiny-name">Ismail Ahmed Alrady</div>
-        <div style="font-size: 0.75rem; opacity: 0.7;">
-            <a href="mailto:asmaylalrdy744@gmail.com" style="color:inherit; text-decoration:none;">📧 asmaylalrdy744@gmail.com</a>
+        <div style="font-size: 0.8rem; opacity: 0.8; margin-top: 5px;">
+            📧 asmaylalrdy744@gmail.com | 🔗 GitHub: asmaylalrdy
         </div>
     </div>
 </div>
@@ -130,111 +109,91 @@
 <script>
     let audioCtx = null;
 
-    function enableAudio() {
-        if (!audioCtx) {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (Notification.permission === "default") {
-            Notification.requestPermission();
-        }
+    // تفعيل الصوت بأبسط طريقة مقبولة للمتصفحات
+    function initAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (Notification.permission === "default") Notification.requestPermission();
     }
 
-    const input = document.getElementById('taskInput');
-    const timeInput = document.getElementById('taskTime');
-    const taskList = document.getElementById('taskList');
-    const countSpan = document.getElementById('count');
-
-    function updateCount() {
-        const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
-        countSpan.innerText = `${tasks.length} ملاحظة`;
-    }
-
-    function addNote() {
-        enableAudio();
-        const text = input.value.trim();
+    function saveTask() {
+        initAudio(); // تفعيل الصوت عند الحفظ
+        const text = document.getElementById('taskInput').value;
+        const time = document.getElementById('taskTime').value;
         if (!text) return;
-        const taskObj = { 
-            text: text, 
-            time: timeInput.value, 
-            id: Date.now(), 
-            notified: false 
-        };
-        let tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
-        tasks.push(taskObj);
+
+        const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
+        tasks.push({ text, time, id: Date.now(), notified: false });
         localStorage.setItem('rady_notes', JSON.stringify(tasks));
         
-        input.value = ''; timeInput.value = '';
-        renderTasks();
+        document.getElementById('taskInput').value = '';
+        render();
     }
 
-    function renderTasks() {
+    function render() {
         const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
-        taskList.innerHTML = '';
-        tasks.reverse().forEach(task => {
+        const list = document.getElementById('taskList');
+        list.innerHTML = '';
+        document.getElementById('count').innerText = `${tasks.length} ملاحظة`;
+
+        tasks.reverse().forEach(t => {
             const li = document.createElement('li');
             li.innerHTML = `
                 <div style="flex:1">
-                    <span class="note-text">${task.text}</span>
-                    ${task.time ? `<span class="time-tag">⏰ ${new Date(task.time).toLocaleString('ar-EG')}</span>` : ''}
+                    <span class="note-text">${t.text}</span>
+                    <span class="time-tag">⏰ ${t.time ? new Date(t.time).toLocaleString('ar-EG') : 'بدون وقت'}</span>
                 </div>
-                <button onclick="deleteTask(${task.id})" style="border:none; background:#fef2f2; color:#dc2626; padding:5px 10px; border-radius:8px; cursor:pointer;">✕</button>
+                <button onclick="deleteTask(${t.id})" style="border:none; background:#fef2f2; color:#dc2626; padding:8px; border-radius:10px; cursor:pointer;">✕</button>
             `;
-            taskList.appendChild(li);
+            list.appendChild(li);
         });
-        updateCount();
     }
 
     function deleteTask(id) {
         let tasks = JSON.parse(localStorage.getItem('rady_notes'));
         localStorage.setItem('rady_notes', JSON.stringify(tasks.filter(t => t.id !== id)));
-        renderTasks();
+        render();
     }
 
     function playAlert() {
-        if (!audioCtx) return;
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-        osc.connect(gain); gain.connect(audioCtx.destination);
-        osc.frequency.value = 880;
-        osc.start(); osc.stop(audioCtx.currentTime + 1);
+        if (audioCtx) {
+            const osc = audioCtx.createOscillator();
+            const g = audioCtx.createGain();
+            osc.connect(g); g.connect(audioCtx.destination);
+            osc.frequency.value = 880;
+            osc.start(); osc.stop(audioCtx.currentTime + 1);
+        }
     }
 
     setInterval(() => {
         const tasks = JSON.parse(localStorage.getItem('rady_notes') || '[]');
-        const now = new Date();
+        const now = new Date().getTime();
         let changed = false;
 
         tasks.forEach(t => {
-            if (t.time && !t.notified) {
-                if (now >= new Date(t.time)) {
-                    playAlert();
-                    if (Notification.permission === "granted") {
-                        new Notification("⏰ Rady Note", { body: t.text, icon: "📝" });
-                    } else {
-                        alert("تنبيه: " + t.text);
-                    }
-                    t.notified = true;
-                    changed = true;
-                }
+            if (t.time && !t.notified && now >= new Date(t.time).getTime()) {
+                playAlert();
+                if (Notification.permission === "granted") new Notification("Rady Note", { body: t.text });
+                else alert("تنبيه: " + t.text);
+                t.notified = true;
+                changed = true;
             }
         });
-        if (changed) localStorage.setItem('rady_notes', JSON.stringify(tasks));
+        if (changed) {
+            localStorage.setItem('rady_notes', JSON.stringify(tasks));
+            render();
+        }
     }, 1000);
 
     function exportToPDF() {
         const element = document.getElementById('main-app');
-        html2pdf().from(element).set({ margin: 10, filename: 'RadyNote.pdf' }).save();
+        html2pdf().from(element).save('Rady_Note.pdf');
     }
 
     function shareApp() {
-        if (navigator.share) {
-            navigator.share({ title: 'Rady Note', url: window.location.href });
-        } else {
-            alert("انسخ الرابط: " + window.location.href);
-        }
+        if (navigator.share) navigator.share({ title: 'Rady Note', url: window.location.href });
     }
 
-    window.onload = renderTasks;
+    window.onload = render;
 </script>
 </body>
 </html>
