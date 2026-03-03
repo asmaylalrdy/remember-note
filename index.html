@@ -4,108 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rady Note 📝</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-gradient: linear-gradient(135deg, #f59e0b, #ea580c);
+            --primary: linear-gradient(135deg, #f59e0b, #ea580c);
             --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --accent: #fb923c;
         }
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: 'Cairo', sans-serif; background-color: var(--bg); color: var(--text);
-            margin: 0; padding: 5px; display: flex; justify-content: center;
+            margin: 0; padding: 4px; display: flex; justify-content: center;
             height: 100vh; overflow: hidden;
         }
         .container {
-            width: 100%; max-width: 400px; background: var(--card);
-            padding: 10px; border-radius: 20px; display: flex; flex-direction: column;
-            height: 98vh; position: relative;
+            width: 100%; max-width: 380px; background: var(--card);
+            padding: 8px; border-radius: 20px; display: flex; flex-direction: column;
+            height: 98vh; position: relative; border: 1px solid #334155;
         }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-        .top-btns { display: flex; gap: 5px; }
-        .lang-btn { background: #f59e0b; color: #000; border: none; padding: 3px 8px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 0.7rem; }
-        .share-btn { background: var(--primary-gradient); color: white; border: none; padding: 3px 8px; border-radius: 6px; font-weight: bold; font-size: 0.7rem; }
+        /* الهيدر مضغوط */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+        .lang-btn { background: #f59e0b; color: #000; border: none; padding: 2px 8px; border-radius: 6px; font-weight: 900; cursor: pointer; font-size: 0.7rem; }
+        .share-btn { background: var(--primary); color: white; border: none; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; }
         
-        .input-section { display: flex; flex-direction: column; gap: 4px; }
+        /* المدخلات مضغوطة جداً */
+        .input-section { display: flex; flex-direction: column; gap: 3px; }
         input { 
-            padding: 8px; border: 1.5px solid #334155; border-radius: 10px; 
-            background: rgba(0,0,0,0.3); color: var(--text); font-family: 'Cairo'; font-size: 0.85rem;
+            padding: 6px 10px; border: 1.5px solid #334155; border-radius: 8px; 
+            background: rgba(0,0,0,0.3); color: var(--text); font-family: 'Cairo'; font-size: 0.8rem;
         }
-        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
-        .btn { padding: 8px; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; font-size: 0.85rem; }
-        .btn-save { background: var(--primary-gradient); color: white; }
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+        .btn { padding: 8px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.8rem; }
+        .btn-save { background: var(--primary); color: white; }
         .btn-pdf { background: #334155; color: white; }
 
-        .single-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 5px 0; }
+        /* عرض الملاحظة الواحدة */
+        .single-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 4px 0; }
         .note-card {
-            width: 100%; background: rgba(255,255,255,0.04); padding: 12px;
-            border-radius: 15px; border-right: 5px solid var(--accent); text-align: center;
+            width: 100%; background: rgba(255,255,255,0.03); padding: 10px;
+            border-radius: 12px; border-right: 4px solid var(--accent); text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
-        .note-text { font-weight: 800; font-size: 1.1rem; display: block; margin-bottom: 3px; }
-        .time-tag { font-size: 0.75rem; color: #10b981; font-weight: bold; }
-        .nav-controls { display: flex; gap: 10px; margin-top: 8px; align-items: center; }
-        .nav-btn { background: #334155; color: white; border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; }
+        .note-text { font-weight: 800; font-size: 1rem; display: block; line-height: 1.2; }
+        .time-tag { font-size: 0.7rem; color: #10b981; font-weight: bold; }
+        .nav-controls { display: flex; gap: 10px; margin-top: 6px; align-items: center; }
+        .nav-btn { background: #334155; color: white; border: none; padding: 3px 10px; border-radius: 5px; font-size: 0.65rem; }
 
-        /* نافذة التنبيه التي لا توقف الكود */
+        /* منبه الطوارئ */
         #alarmOverlay {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(234, 88, 12, 0.9); z-index: 100; border-radius: 20px;
-            flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px;
+            background: rgba(234, 88, 12, 0.95); z-index: 1000; border-radius: 20px;
+            flex-direction: column; justify-content: center; align-items: center; padding: 15px;
         }
+        #alarmOverlay h2 { font-size: 1.2rem; color: white; margin-bottom: 15px; }
 
-        .dev-footer { text-align: center; border-top: 1px solid #334155; padding-top: 5px; font-size: 0.65rem; margin-top: auto; }
-        .dev-name { color: var(--accent); font-weight: 800; font-size: 0.85rem; }
+        .dev-footer { text-align: center; border-top: 1px solid #334155; padding-top: 4px; font-size: 0.6rem; }
+        .dev-name { color: var(--accent); font-weight: 800; }
     </style>
 </head>
-<body onclick="enableAudio()">
+<body onclick="unlock()">
 
 <div class="container" id="main-app">
     <div id="alarmOverlay">
-        <h1 style="font-size: 3rem;">🔔</h1>
-        <h2 id="alarmMsg">وقت الملاحظة!</h2>
-        <button onclick="stopAlarm()" style="padding: 15px 30px; border-radius: 50px; border: none; background: white; color: #ea580c; font-weight: 800; cursor: pointer;">إيقاف المنبه ✅</button>
+        <div style="font-size: 4rem; animation: pulse 1s infinite;">🔔</div>
+        <h2 id="alarmMsg">استيقظ! لديك ملاحظة</h2>
+        <button onclick="stopRing()" style="padding: 12px 25px; border-radius: 30px; border: none; background: white; color: #ea580c; font-weight: 900; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">إيقاف الرنين 🔕</button>
     </div>
 
     <div class="header">
         <div class="top-btns">
             <button class="lang-btn" onclick="toggleLang()" id="lBtn">EN</button>
-            <button onclick="share()" class="share-btn" id="sBtn">شارك 🔗</button>
+            <button onclick="share()" class="share-btn">🔗</button>
         </div>
-        <h4 style="margin:0; color:var(--accent);" id="mainTitle">🚀 Rady Note</h4>
+        <h5 style="margin:0; color:var(--accent); font-size: 1rem;" id="mainTitle">🚀 Rady Note</h5>
     </div>
     
-    <div id="count" style="font-size:0.65rem; color:var(--accent); font-weight:bold;">0 ملاحظة</div>
+    <div id="count" style="font-size:0.6rem; color:var(--accent); font-weight:bold; margin: 2px 0;">0 ملاحظة</div>
 
     <div class="input-section">
         <input type="text" id="taskInput" placeholder="اكتب ملاحظة...">
         <input type="datetime-local" id="taskTime">
         <div class="btn-group">
-            <button class="btn btn-save" onclick="add()" id="saveBtn">حفظ 💾</button>
-            <button class="btn btn-pdf" onclick="window.print()">PDF 📄</button>
+            <button class="btn btn-save" onclick="save()" id="saveBtn">حفظ 💾</button>
+            <button class="btn btn-pdf" onclick="window.print()">PDF</button>
         </div>
     </div>
     
     <div class="single-view" id="noteDisplay"></div>
 
     <div class="dev-footer">
-        <div id="footerText">بإشراف وتطوير </div>
+        <div id="footerText">بإشراف وتطوير المهندس</div>
         <div class="dev-name">Ismail Ahmed Alrady</div>
         <div style="opacity:0.6;">asmaylalrdy744@gmail.com</div>
     </div>
 </div>
 
 <script>
-    let audioCtx = null;
-    let currentIdx = 0;
-    let currentLang = 'ar';
-    let alarmInterval = null;
+    let audioCtx = null, currentIdx = 0, currentLang = 'ar', alarmLoop = null;
 
-    const translations = {
-        ar: { save: "حفظ 💾", footer: "بإشراف وتطوير المهندس", placeholder: "اكتب ملاحظة...", noNotes: "لا توجد ملاحظات 📝", prev: "السابق", next: "التالي", delete: "حذف ✕", noTime: "بدون منبه", notes: "ملاحظة" },
-        en: { save: "Save 💾", footer: "Developed by Engineer", placeholder: "Write a note...", noNotes: "No notes 📝", prev: "Prev", next: "Next", delete: "Delete ✕", noTime: "No Alarm", notes: "Notes" }
+    const trans = {
+        ar: { save: "حفظ 💾", footer: "بإشراف وتطوير ", placeholder: "اكتب ملاحظة...", noNotes: "فارغ 📝", prev: "السابق", next: "التالي", del: "حذف ✕", notes: "ملاحظة" },
+        en: { save: "Save 💾", footer: "Developed by Engineer", placeholder: "Write note...", noNotes: "Empty 📝", prev: "Prev", next: "Next", del: "Del ✕", notes: "Notes" }
     };
 
-    function enableAudio() {
+    function unlock() {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
     }
@@ -118,94 +119,98 @@
     }
 
     function updateUI() {
-        const t = translations[currentLang];
+        const t = trans[currentLang];
         document.getElementById('saveBtn').innerText = t.save;
         document.getElementById('footerText').innerText = t.footer;
         document.getElementById('taskInput').placeholder = t.placeholder;
         render();
     }
 
-    function add() {
-        const input = document.getElementById('taskInput');
-        const time = document.getElementById('taskTime');
+    function save() {
+        unlock();
+        const input = document.getElementById('taskInput'), time = document.getElementById('taskTime');
         if (!input.value.trim()) return;
-        const tasks = JSON.parse(localStorage.getItem('rady_v6') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_v7') || '[]');
         tasks.push({ text: input.value, time: time.value, id: Date.now(), done: false });
-        localStorage.setItem('rady_v6', JSON.stringify(tasks));
+        localStorage.setItem('rady_v7', JSON.stringify(tasks));
         input.value = ''; time.value = '';
         currentIdx = tasks.length - 1;
         render();
     }
 
     function render() {
-        const tasks = JSON.parse(localStorage.getItem('rady_v6') || '[]');
-        const display = document.getElementById('noteDisplay');
-        const t = translations[currentLang];
+        const tasks = JSON.parse(localStorage.getItem('rady_v7') || '[]');
+        const display = document.getElementById('noteDisplay'), t = trans[currentLang];
         document.getElementById('count').innerText = `${tasks.length} ${t.notes}`;
-        if (tasks.length === 0) { display.innerHTML = `<div class="note-card"><span class="note-text">${t.noNotes}</span></div>`; return; }
+        if (!tasks.length) { display.innerHTML = `<div class="note-card"><span>${t.noNotes}</span></div>`; return; }
         const note = tasks[currentIdx];
         display.innerHTML = `
             <div class="note-card">
                 <span class="note-text">${note.text}</span>
-                <span class="time-tag">⏰ ${note.time ? new Date(note.time).toLocaleString(currentLang === 'ar' ? 'ar-EG' : 'en-US') : t.noTime}</span>
-                <div style="margin-top:5px;"><button onclick="del(${note.id})" style="background:none; border:none; color:#ef4444; font-weight:bold; cursor:pointer; font-size:0.75rem;">${t.delete}</button></div>
+                <span class="time-tag">⏰ ${note.time ? new Date(note.time).toLocaleString() : ''}</span>
+                <br><button onclick="del(${note.id})" style="color:red; background:none; border:none; font-size:0.7rem; cursor:pointer; margin-top:5px;">${t.del}</button>
             </div>
             <div class="nav-controls">
-                <button class="nav-btn" onclick="prev()">${t.prev}</button>
-                <span style="font-size:0.7rem; opacity:0.7;">${currentIdx + 1} / ${tasks.length}</span>
-                <button class="nav-btn" onclick="next()">${t.next}</button>
+                <button class="nav-btn" onclick="move(-1)">${t.prev}</button>
+                <span style="font-size:0.6rem;">${currentIdx + 1}/${tasks.length}</span>
+                <button class="nav-btn" onclick="move(1)">${t.next}</button>
             </div>`;
     }
 
-    function prev() { if (currentIdx > 0) { currentIdx--; render(); } }
-    function next() { if (currentIdx < JSON.parse(localStorage.getItem('rady_v6')).length - 1) { currentIdx++; render(); } }
-    function del(id) {
-        let tasks = JSON.parse(localStorage.getItem('rady_v6')).filter(x => x.id !== id);
-        localStorage.setItem('rady_v6', JSON.stringify(tasks));
+    function move(step) {
+        const len = JSON.parse(localStorage.getItem('rady_v7')).length;
+        currentIdx = (currentIdx + step + len) % len;
         render();
     }
 
-    function startAlarm(text) {
-        document.getElementById('alarmMsg').innerText = text;
-        document.getElementById('alarmOverlay').style.display = 'flex';
-        if (navigator.vibrate) navigator.vibrate([500, 200, 500, 200]);
-        
-        // رنين متكرر كل ثانية ونصف
-        ring();
-        alarmInterval = setInterval(ring, 1500);
-    }
-
-    function stopAlarm() {
-        clearInterval(alarmInterval);
-        document.getElementById('alarmOverlay').style.display = 'none';
-        if (navigator.vibrate) navigator.vibrate(0);
+    function del(id) {
+        let tasks = JSON.parse(localStorage.getItem('rady_v7')).filter(x => x.id !== id);
+        localStorage.setItem('rady_v7', JSON.stringify(tasks));
+        currentIdx = 0; render();
     }
 
     function ring() {
         if (!audioCtx) return;
-        const o = audioCtx.createOscillator();
-        const g = audioCtx.createGain();
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
         o.connect(g); g.connect(audioCtx.destination);
-        o.type = 'sine'; o.frequency.setValueAtTime(880, audioCtx.currentTime);
+        o.type = 'sawtooth'; o.frequency.setValueAtTime(440, audioCtx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.5);
         g.gain.setValueAtTime(0.5, audioCtx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.2);
-        o.start(); o.stop(audioCtx.currentTime + 1.2);
+        o.start(); o.stop(audioCtx.currentTime + 0.5);
+    }
+
+    function startAlarm(msg) {
+        document.getElementById('alarmMsg').innerText = msg;
+        document.getElementById('alarmOverlay').style.display = 'flex';
+        ring();
+        alarmLoop = setInterval(ring, 1000);
+        if (navigator.vibrate) navigator.vibrate([500, 500, 500]);
+    }
+
+    function stopRing() {
+        clearInterval(alarmLoop);
+        document.getElementById('alarmOverlay').style.display = 'none';
+        if (navigator.vibrate) navigator.vibrate(0);
     }
 
     setInterval(() => {
-        const tasks = JSON.parse(localStorage.getItem('rady_v6') || '[]');
-        const now = new Date().getTime();
-        tasks.forEach(task => {
-            if (task.time && !task.done && now >= new Date(task.time).getTime()) {
-                startAlarm(task.text);
-                task.done = true;
-                localStorage.setItem('rady_v6', JSON.stringify(tasks));
+        const tasks = JSON.parse(localStorage.getItem('rady_v7') || '[]');
+        const now = Date.now();
+        tasks.forEach(t => {
+            if (t.time && !t.done && now >= new Date(t.time).getTime()) {
+                startAlarm(t.text);
+                t.done = true;
+                localStorage.setItem('rady_v7', JSON.stringify(tasks));
             }
         });
     }, 1000);
 
-    function share() { if (navigator.share) navigator.share({ title: 'Rady Note', url: window.location.href }); }
+    function share() { if(navigator.share) navigator.share({title: 'Rady Note', url: location.href}); }
     window.onload = updateUI;
 </script>
+
+<style>
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+</style>
 </body>
 </html>
