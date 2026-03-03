@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Rady Note 📝</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -11,90 +11,112 @@
             --bg: #0f172a; --card: #1e293b; --text: #f1f5f9; --accent: #fb923c;
         }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
         body {
             font-family: 'Cairo', sans-serif; background-color: var(--bg); color: var(--text);
-            margin: 0; padding: 4px; display: flex; justify-content: center;
+            margin: 0; 
+            /* إضافة هامش علوي وسفلي متوازن */
+            padding: 15px 10px 20px 10px; 
+            display: flex; justify-content: center; align-items: center;
             height: 100vh; overflow: hidden;
         }
+
         .container {
-            width: 100%; max-width: 380px; background: var(--card);
-            padding: 8px; border-radius: 20px; display: flex; flex-direction: column;
-            height: 98vh; position: relative; border: 1px solid #334155;
+            width: 100%; max-width: 400px; background: var(--card);
+            padding: 12px; border-radius: 25px; display: flex; flex-direction: column;
+            /* جعل الارتفاع مرن ليناسب الشاشة مع ترك مسافة للهوامش الخارجية */
+            height: 100%; max-height: 92vh; 
+            position: relative; border: 1px solid #334155;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
-        /* الهيدر مضغوط */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
-        .lang-btn { background: #f59e0b; color: #000; border: none; padding: 2px 8px; border-radius: 6px; font-weight: 900; cursor: pointer; font-size: 0.7rem; }
-        .share-btn { background: var(--primary); color: white; border: none; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; }
+
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .lang-btn { background: #f59e0b; color: #000; border: none; padding: 4px 12px; border-radius: 8px; font-weight: 900; cursor: pointer; font-size: 0.75rem; }
+        .share-btn { background: var(--primary); color: white; border: none; padding: 4px 12px; border-radius: 8px; font-size: 0.75rem; font-weight: bold; }
         
-        /* المدخلات مضغوطة جداً */
-        .input-section { display: flex; flex-direction: column; gap: 3px; }
+        .input-section { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
         input { 
-            padding: 6px 10px; border: 1.5px solid #334155; border-radius: 8px; 
-            background: rgba(0,0,0,0.3); color: var(--text); font-family: 'Cairo'; font-size: 0.8rem;
+            padding: 10px; border: 1.5px solid #334155; border-radius: 12px; 
+            background: rgba(0,0,0,0.3); color: var(--text); font-family: 'Cairo'; font-size: 0.9rem; outline: none;
         }
-        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-        .btn { padding: 8px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.8rem; }
+        input:focus { border-color: var(--accent); }
+
+        .btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .btn { padding: 10px; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 0.9rem; transition: 0.3s; }
         .btn-save { background: var(--primary); color: white; }
         .btn-pdf { background: #334155; color: white; }
 
-        /* عرض الملاحظة الواحدة */
-        .single-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 4px 0; }
-        .note-card {
-            width: 100%; background: rgba(255,255,255,0.03); padding: 10px;
-            border-radius: 12px; border-right: 4px solid var(--accent); text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        /* منطقة العرض - تم تحسين التمركز */
+        .single-view { 
+            flex-grow: 1; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; 
+            margin: 10px 0; min-height: 0;
         }
-        .note-text { font-weight: 800; font-size: 1rem; display: block; line-height: 1.2; }
-        .time-tag { font-size: 0.7rem; color: #10b981; font-weight: bold; }
-        .nav-controls { display: flex; gap: 10px; margin-top: 6px; align-items: center; }
-        .nav-btn { background: #334155; color: white; border: none; padding: 3px 10px; border-radius: 5px; font-size: 0.65rem; }
 
-        /* منبه الطوارئ */
+        .note-card {
+            width: 100%; background: rgba(255,255,255,0.05); padding: 20px;
+            border-radius: 20px; border-right: 6px solid var(--accent); text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .note-text { font-weight: 800; font-size: 1.2rem; display: block; margin-bottom: 8px; line-height: 1.4; }
+        .time-tag { font-size: 0.85rem; color: #10b981; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        
+        .nav-controls { display: flex; gap: 15px; margin-top: 15px; align-items: center; }
+        .nav-btn { background: #334155; color: white; border: none; padding: 6px 15px; border-radius: 10px; font-size: 0.8rem; cursor: pointer; }
+
+        /* التذييل - تم سحبه للأسفل مع ضمان الوضوح */
+        .dev-footer { 
+            text-align: center; border-top: 1px solid #475569; 
+            padding-top: 10px; margin-top: auto;
+        }
+        .dev-name { color: var(--accent); font-weight: 800; font-size: 1rem; margin-top: 2px; }
+        .dev-info { font-size: 0.75rem; opacity: 0.7; margin-top: 2px; }
+
+        /* شاشة المنبه */
         #alarmOverlay {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(234, 88, 12, 0.95); z-index: 1000; border-radius: 20px;
-            flex-direction: column; justify-content: center; align-items: center; padding: 15px;
+            background: rgba(234, 88, 12, 0.98); z-index: 1000; border-radius: 25px;
+            flex-direction: column; justify-content: center; align-items: center; padding: 20px; text-align: center;
         }
-        #alarmOverlay h2 { font-size: 1.2rem; color: white; margin-bottom: 15px; }
-
-        .dev-footer { text-align: center; border-top: 1px solid #334155; padding-top: 4px; font-size: 0.6rem; }
-        .dev-name { color: var(--accent); font-weight: 800; }
     </style>
 </head>
-<body onclick="unlock()">
+<body onclick="unlockAudio()">
 
 <div class="container" id="main-app">
     <div id="alarmOverlay">
-        <div style="font-size: 4rem; animation: pulse 1s infinite;">🔔</div>
-        <h2 id="alarmMsg">استيقظ! لديك ملاحظة</h2>
-        <button onclick="stopRing()" style="padding: 12px 25px; border-radius: 30px; border: none; background: white; color: #ea580c; font-weight: 900; cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">إيقاف الرنين 🔕</button>
+        <div style="font-size: 5rem; margin-bottom: 20px;">🔔</div>
+        <h2 id="alarmMsg" style="color: white; margin-bottom: 30px;">حان وقت الملاحظة!</h2>
+        <button onclick="stopRing()" style="padding: 15px 40px; border-radius: 50px; border: none; background: white; color: #ea580c; font-weight: 900; cursor: pointer; font-size: 1.1rem;">إيقاف 🔕</button>
     </div>
 
     <div class="header">
         <div class="top-btns">
             <button class="lang-btn" onclick="toggleLang()" id="lBtn">EN</button>
-            <button onclick="share()" class="share-btn">🔗</button>
+            <button onclick="share()" class="share-btn" id="sBtn">مشاركة 🔗</button>
         </div>
-        <h5 style="margin:0; color:var(--accent); font-size: 1rem;" id="mainTitle">🚀 Rady Note</h5>
+        <h2 style="margin:0; color:var(--accent); font-size: 1.2rem; font-weight: 900;" id="mainTitle">🚀 Rady Note</h2>
     </div>
     
-    <div id="count" style="font-size:0.6rem; color:var(--accent); font-weight:bold; margin: 2px 0;">0 ملاحظة</div>
+    <div id="count" style="font-size:0.75rem; color:var(--accent); font-weight:bold; margin-bottom: 5px;">0 ملاحظة</div>
 
     <div class="input-section">
-        <input type="text" id="taskInput" placeholder="اكتب ملاحظة...">
+        <input type="text" id="taskInput" placeholder="اكتب ملاحظة ذكية...">
         <input type="datetime-local" id="taskTime">
         <div class="btn-group">
-            <button class="btn btn-save" onclick="save()" id="saveBtn">حفظ 💾</button>
-            <button class="btn btn-pdf" onclick="window.print()">PDF</button>
+            <button class="btn btn-save" onclick="saveNote()" id="saveBtn">حفظ 💾</button>
+            <button class="btn btn-pdf" onclick="window.print()">تصدير PDF</button>
         </div>
     </div>
     
-    <div class="single-view" id="noteDisplay"></div>
+    <div class="single-view" id="noteDisplay">
+        </div>
 
     <div class="dev-footer">
-        <div id="footerText">بإشراف وتطوير المهندس</div>
+        <div id="footerText" style="font-size: 0.8rem;">بإشراف وتطوير المهندس</div>
         <div class="dev-name">Ismail Ahmed Alrady</div>
-        <div style="opacity:0.6;">asmaylalrdy744@gmail.com</div>
+        <div class="dev-info">
+            asmaylalrdy744@gmail.com | GitHub: asmaylalrdy
+        </div>
     </div>
 </div>
 
@@ -102,11 +124,11 @@
     let audioCtx = null, currentIdx = 0, currentLang = 'ar', alarmLoop = null;
 
     const trans = {
-        ar: { save: "حفظ 💾", footer: "بإشراف وتطوير ", placeholder: "اكتب ملاحظة...", noNotes: "فارغ 📝", prev: "السابق", next: "التالي", del: "حذف ✕", notes: "ملاحظة" },
-        en: { save: "Save 💾", footer: "Developed by Engineer", placeholder: "Write note...", noNotes: "Empty 📝", prev: "Prev", next: "Next", del: "Del ✕", notes: "Notes" }
+        ar: { save: "حفظ 💾", footer: "بإشراف وتطوير ", placeholder: "اكتب ملاحظة ذكية...", noNotes: "لا توجد ملاحظات حالياً 📝", prev: "السابق", next: "التالي", del: "حذف الملاحظة ✕", notes: "ملاحظة", alarm: "استيقظ! لديك تنبيه" },
+        en: { save: "Save 💾", footer: "Developed by Engineer", placeholder: "Write a smart note...", noNotes: "No notes yet 📝", prev: "Prev", next: "Next", del: "Delete Note ✕", notes: "Notes", alarm: "Wake up! Note Alert" }
     };
 
-    function unlock() {
+    function unlockAudio() {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         if (audioCtx.state === 'suspended') audioCtx.resume();
     }
@@ -126,46 +148,52 @@
         render();
     }
 
-    function save() {
-        unlock();
+    function saveNote() {
+        unlockAudio();
         const input = document.getElementById('taskInput'), time = document.getElementById('taskTime');
         if (!input.value.trim()) return;
-        const tasks = JSON.parse(localStorage.getItem('rady_v7') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_v8') || '[]');
         tasks.push({ text: input.value, time: time.value, id: Date.now(), done: false });
-        localStorage.setItem('rady_v7', JSON.stringify(tasks));
+        localStorage.setItem('rady_v8', JSON.stringify(tasks));
         input.value = ''; time.value = '';
         currentIdx = tasks.length - 1;
         render();
     }
 
     function render() {
-        const tasks = JSON.parse(localStorage.getItem('rady_v7') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_v8') || '[]');
         const display = document.getElementById('noteDisplay'), t = trans[currentLang];
         document.getElementById('count').innerText = `${tasks.length} ${t.notes}`;
-        if (!tasks.length) { display.innerHTML = `<div class="note-card"><span>${t.noNotes}</span></div>`; return; }
+        
+        if (!tasks.length) { 
+            display.innerHTML = `<div class="note-card"><span class="note-text">${t.noNotes}</span></div>`; 
+            return; 
+        }
+
         const note = tasks[currentIdx];
         display.innerHTML = `
             <div class="note-card">
                 <span class="note-text">${note.text}</span>
-                <span class="time-tag">⏰ ${note.time ? new Date(note.time).toLocaleString() : ''}</span>
-                <br><button onclick="del(${note.id})" style="color:red; background:none; border:none; font-size:0.7rem; cursor:pointer; margin-top:5px;">${t.del}</button>
+                <span class="time-tag">⏰ ${note.time ? new Date(note.time).toLocaleString(currentLang === 'ar'?'ar-EG':'en-US') : ''}</span>
+                <button onclick="del(${note.id})" style="color:#f87171; background:none; border:none; font-size:0.8rem; cursor:pointer; margin-top:10px; font-weight:bold;">${t.del}</button>
             </div>
             <div class="nav-controls">
                 <button class="nav-btn" onclick="move(-1)">${t.prev}</button>
-                <span style="font-size:0.6rem;">${currentIdx + 1}/${tasks.length}</span>
+                <span style="font-size:0.85rem; font-weight:bold;">${currentIdx + 1} / ${tasks.length}</span>
                 <button class="nav-btn" onclick="move(1)">${t.next}</button>
             </div>`;
     }
 
     function move(step) {
-        const len = JSON.parse(localStorage.getItem('rady_v7')).length;
+        const len = JSON.parse(localStorage.getItem('rady_v8') || '[]').length;
+        if (len === 0) return;
         currentIdx = (currentIdx + step + len) % len;
         render();
     }
 
     function del(id) {
-        let tasks = JSON.parse(localStorage.getItem('rady_v7')).filter(x => x.id !== id);
-        localStorage.setItem('rady_v7', JSON.stringify(tasks));
+        let tasks = JSON.parse(localStorage.getItem('rady_v8')).filter(x => x.id !== id);
+        localStorage.setItem('rady_v8', JSON.stringify(tasks));
         currentIdx = 0; render();
     }
 
@@ -173,8 +201,8 @@
         if (!audioCtx) return;
         const o = audioCtx.createOscillator(), g = audioCtx.createGain();
         o.connect(g); g.connect(audioCtx.destination);
-        o.type = 'sawtooth'; o.frequency.setValueAtTime(440, audioCtx.currentTime);
-        o.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.5);
+        o.type = 'sawtooth'; o.frequency.setValueAtTime(500, audioCtx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(1000, audioCtx.currentTime + 0.4);
         g.gain.setValueAtTime(0.5, audioCtx.currentTime);
         o.start(); o.stop(audioCtx.currentTime + 0.5);
     }
@@ -184,7 +212,7 @@
         document.getElementById('alarmOverlay').style.display = 'flex';
         ring();
         alarmLoop = setInterval(ring, 1000);
-        if (navigator.vibrate) navigator.vibrate([500, 500, 500]);
+        if (navigator.vibrate) navigator.vibrate([500, 300, 500]);
     }
 
     function stopRing() {
@@ -194,13 +222,13 @@
     }
 
     setInterval(() => {
-        const tasks = JSON.parse(localStorage.getItem('rady_v7') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_v8') || '[]');
         const now = Date.now();
         tasks.forEach(t => {
             if (t.time && !t.done && now >= new Date(t.time).getTime()) {
                 startAlarm(t.text);
                 t.done = true;
-                localStorage.setItem('rady_v7', JSON.stringify(tasks));
+                localStorage.setItem('rady_v8', JSON.stringify(tasks));
             }
         });
     }, 1000);
@@ -208,9 +236,5 @@
     function share() { if(navigator.share) navigator.share({title: 'Rady Note', url: location.href}); }
     window.onload = updateUI;
 </script>
-
-<style>
-    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-</style>
 </body>
 </html>
