@@ -6,10 +6,12 @@
     <title>Rady Note 📝</title>
     
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#ea580c">
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3701/3701596.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3701/3701596.png">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3701/3701596.png">
+    <meta name="theme-color" content="#ea580c">
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -138,7 +140,6 @@
 </div>
 
 <script>
-    // تسجيل الـ Service Worker للـ PWA
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js').then(reg => {
