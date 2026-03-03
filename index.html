@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Rady Note 📝</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ea580c">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3701/3701596.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -28,9 +35,9 @@
             width: 100%; max-width: 400px; background: var(--card);
             padding: 12px; border-radius: 25px; display: flex; flex-direction: column;
             height: 96vh; position: relative; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
         }
 
-        /* تنسيق الهيدر الجديد ليجمع كل الأدوات */
         .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
         
         .right-tools { display: flex; flex-direction: column; gap: 5px; }
@@ -69,7 +76,6 @@
         .nav-group { display: flex; gap: 15px; margin-top: 15px; align-items: center; }
         .nav-btn { background: #334155; color: white; border: none; padding: 6px 15px; border-radius: 10px; cursor: pointer; font-size: 0.8rem; }
 
-        /* التذييل المصلح بظهور GitHub */
         .dev-footer { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; margin-top: auto; }
         .dev-name { color: var(--accent); font-weight: 900; font-size: 1.05rem; display: block; }
         .dev-links { font-size: 0.72rem; margin-top: 5px; color: #94a3b8; }
@@ -132,6 +138,15 @@
 </div>
 
 <script>
+    // تسجيل الـ Service Worker للـ PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js').then(reg => {
+                console.log('PWA Service Worker registered');
+            }).catch(err => console.log('SW registration failed', err));
+        });
+    }
+
     let audioCtx = null, currentIdx = 0, currentLang = 'ar', alarmInterval = null;
 
     const trans = {
@@ -162,18 +177,19 @@
     }
 
     function add() {
+        initAudio();
         const input = document.getElementById('taskInput'), time = document.getElementById('taskTime');
         if (!input.value.trim()) return;
-        const tasks = JSON.parse(localStorage.getItem('rady_v11') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
         tasks.push({ text: input.value, time: time.value, id: Date.now(), done: false });
-        localStorage.setItem('rady_v11', JSON.stringify(tasks));
+        localStorage.setItem('rady_vPWA', JSON.stringify(tasks));
         input.value = ''; time.value = '';
         currentIdx = tasks.length - 1;
         render();
     }
 
     function render() {
-        const tasks = JSON.parse(localStorage.getItem('rady_v11') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
         const display = document.getElementById('noteDisplay'), t = trans[currentLang];
         document.getElementById('count').innerText = `${tasks.length} ${t.notes}`;
         
@@ -194,15 +210,15 @@
     }
 
     function move(s) {
-        const tasks = JSON.parse(localStorage.getItem('rady_v11') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
         if (tasks.length <= 1) return;
         currentIdx = (currentIdx + s + tasks.length) % tasks.length;
         render();
     }
 
     function del(id) {
-        let tasks = JSON.parse(localStorage.getItem('rady_v11')).filter(x => x.id !== id);
-        localStorage.setItem('rady_v11', JSON.stringify(tasks));
+        let tasks = JSON.parse(localStorage.getItem('rady_vPWA')).filter(x => x.id !== id);
+        localStorage.setItem('rady_vPWA', JSON.stringify(tasks));
         currentIdx = 0; render();
     }
 
@@ -218,14 +234,14 @@
     function stopRing() { clearInterval(alarmInterval); document.getElementById('alarmOverlay').style.display = 'none'; }
 
     setInterval(() => {
-        const tasks = JSON.parse(localStorage.getItem('rady_v11') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
         const now = Date.now();
         tasks.forEach(t => {
             if (t.time && !t.done && now >= new Date(t.time).getTime()) {
                 document.getElementById('alarmMsg').innerText = t.text;
                 document.getElementById('alarmOverlay').style.display = 'flex';
                 ring(); alarmInterval = setInterval(ring, 1200);
-                t.done = true; localStorage.setItem('rady_v11', JSON.stringify(tasks));
+                t.done = true; localStorage.setItem('rady_vPWA', JSON.stringify(tasks));
             }
         });
     }, 1000);
