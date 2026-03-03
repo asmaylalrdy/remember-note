@@ -1,17 +1,21 @@
 {
   "name": "Rady Note",
   "short_name": "RadyNote",
-  "start_url": "index.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#ea580c",
-  "orientation": "portrait",
+  "description": "Smart Note Application by Ismail Alrady",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/3701/3701596.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3701/3701596.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
