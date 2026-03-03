@@ -12,7 +12,6 @@
             --bg: #0f172a; --card: #1e293b; --text: #f1f5f9;
         }
         
-        /* الثيمات الإضافية */
         body.theme-purple { --accent: #a855f7; --primary-grad: linear-gradient(135deg, #a855f7, #7e22ce); --bg: #1e1b4b; }
         body.theme-green { --accent: #22c55e; --primary-grad: linear-gradient(135deg, #22c55e, #15803d); --bg: #064e3b; }
         body.theme-red { --accent: #ef4444; --primary-grad: linear-gradient(135deg, #ef4444, #b91c1c); --bg: #450a0a; }
@@ -28,51 +27,53 @@
         .container {
             width: 100%; max-width: 400px; background: var(--card);
             padding: 12px; border-radius: 25px; display: flex; flex-direction: column;
-            height: 96vh; position: relative; border: 1.5px solid rgba(255,255,255,0.1);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            height: 96vh; position: relative; border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+        /* تنسيق الهيدر الجديد ليجمع كل الأدوات */
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
         
-        /* لوحة تغيير الألوان */
-        .theme-picker { display: flex; gap: 5px; }
-        .dot { width: 15px; height: 15px; border-radius: 50%; cursor: pointer; border: 2px solid white; }
+        .right-tools { display: flex; flex-direction: column; gap: 5px; }
+        .theme-picker { display: flex; gap: 5px; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 10px; }
+        .dot { width: 14px; height: 14px; border-radius: 50%; cursor: pointer; border: 1px solid white; }
+        
+        .action-btns { display: flex; gap: 5px; }
+        .btn-mini { border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; cursor: pointer; }
+        .btn-share { background: var(--primary-grad); color: white; }
+        .btn-lang { background: #334155; color: white; }
+
+        .counter-badge { background: var(--accent); color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.75rem; font-weight: 900; }
 
         .input-section { display: flex; flex-direction: column; gap: 5px; }
         input { 
-            padding: 10px; border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; 
+            padding: 10px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 12px; 
             background: rgba(0,0,0,0.2); color: var(--text); font-family: 'Cairo'; font-size: 0.85rem; outline: none;
         }
-        input:focus { border-color: var(--accent); transform: scale(1.02); }
         
+        .main-btn-row { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; }
         .btn-save { background: var(--primary-grad); color: white; border: none; padding: 10px; border-radius: 12px; font-weight: 900; cursor: pointer; }
-        .btn-save:active { transform: scale(0.95); }
+        .btn-pdf { background: #475569; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
-        /* منطقة الملاحظة مع حركة انسيابية */
-        .single-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .single-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 10px 0; }
         
         .note-card {
-            width: 100%; background: rgba(255,255,255,0.05); padding: 20px;
-            border-radius: 20px; border-right: 6px solid var(--accent); text-align: center;
-            animation: slideIn 0.5s ease-out;
+            width: 100%; background: rgba(255,255,255,0.04); padding: 20px;
+            border-radius: 20px; border-right: 5px solid var(--accent); text-align: center;
+            animation: fadeIn 0.4s ease;
         }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .note-text { font-weight: 800; font-size: 1.2rem; display: block; margin-bottom: 5px; }
-        .time-tag { font-size: 0.8rem; color: var(--accent); font-weight: bold; }
+        .note-text { font-weight: 800; font-size: 1.15rem; display: block; margin-bottom: 5px; }
+        .time-tag { font-size: 0.8rem; color: #10b981; font-weight: bold; }
         
-        .nav-btn { background: rgba(255,255,255,0.1); color: white; border: none; padding: 6px 15px; border-radius: 10px; cursor: pointer; }
-        .nav-btn:hover { background: var(--accent); }
+        .nav-group { display: flex; gap: 15px; margin-top: 15px; align-items: center; }
+        .nav-btn { background: #334155; color: white; border: none; padding: 6px 15px; border-radius: 10px; cursor: pointer; font-size: 0.8rem; }
 
-        /* التذييل المصلح */
+        /* التذييل المصلح بظهور GitHub */
         .dev-footer { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; margin-top: auto; }
-        .dev-name { color: var(--accent); font-weight: 900; font-size: 1.1rem; }
-        .dev-links { font-size: 0.7rem; display: flex; flex-direction: column; gap: 2px; margin-top: 3px; }
-        .link-item { color: var(--text); opacity: 0.7; text-decoration: none; }
+        .dev-name { color: var(--accent); font-weight: 900; font-size: 1.05rem; display: block; }
+        .dev-links { font-size: 0.72rem; margin-top: 5px; color: #94a3b8; }
+        .link-line { display: block; margin: 2px 0; }
 
         #alarmOverlay {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -83,44 +84,77 @@
 </head>
 <body onclick="initAudio()">
 
-<div class="container" id="main-app">
+<div class="container">
     <div id="alarmOverlay">
-        <h1 style="font-size: 4rem; animation: bounce 1s infinite;">🔔</h1>
-        <h2 id="alarmMsg" style="padding: 10px;">انتبه للملاحظة!</h2>
-        <button onclick="stopRing()" style="padding: 15px 40px; border-radius: 50px; border: none; background: white; color: black; font-weight: 900;">إيقاف 🔕</button>
+        <h1 style="font-size: 4rem;">🔔</h1>
+        <h2 id="alarmMsg" style="padding: 20px; color:white;">الموعد حان!</h2>
+        <button onclick="stopRing()" style="padding: 12px 40px; border-radius: 30px; border: none; font-weight: 900;">إيقاف التنبيه 🔕</button>
     </div>
 
     <div class="header">
-        <div class="theme-picker">
-            <div class="dot" style="background: #fb923c;" onclick="setTheme('')"></div>
-            <div class="dot" style="background: #a855f7;" onclick="setTheme('theme-purple')"></div>
-            <div class="dot" style="background: #22c55e;" onclick="setTheme('theme-green')"></div>
-            <div class="dot" style="background: #ef4444;" onclick="setTheme('theme-red')"></div>
+        <div class="right-tools">
+            <div class="theme-picker">
+                <div class="dot" style="background: #fb923c;" onclick="setTheme('')"></div>
+                <div class="dot" style="background: #a855f7;" onclick="setTheme('theme-purple')"></div>
+                <div class="dot" style="background: #22c55e;" onclick="setTheme('theme-green')"></div>
+                <div class="dot" style="background: #ef4444;" onclick="setTheme('theme-red')"></div>
+            </div>
+            <div class="action-btns">
+                <button class="btn-mini btn-lang" onclick="toggleLang()" id="lBtn">EN</button>
+                <button class="btn-mini btn-share" onclick="shareApp()">مشاركة 🔗</button>
+            </div>
         </div>
-        <h2 style="margin:0; color:var(--accent); font-size: 1.2rem;" id="mainTitle">🚀 Rady Note</h2>
+        <div style="text-align: left; display: flex; flex-direction: column; align-items: flex-end;">
+            <h2 style="margin:0; color:var(--accent); font-size: 1.1rem;">🚀 Rady Note</h2>
+            <div id="count" class="counter-badge">0 ملاحظة</div>
+        </div>
     </div>
 
     <div class="input-section">
-        <input type="text" id="taskInput" placeholder="اكتب ملاحظة...">
+        <input type="text" id="taskInput" placeholder="اكتب ملاحظة ذكية...">
         <input type="datetime-local" id="taskTime">
-        <button class="btn-save" onclick="add()" id="saveBtn">حفظ الملاحظة 💾</button>
+        <div class="main-btn-row">
+            <button class="btn-save" onclick="add()" id="saveBtn">حفظ الملاحظة 💾</button>
+            <button class="btn-pdf" onclick="window.print()">PDF</button>
+        </div>
     </div>
     
     <div class="single-view" id="noteDisplay"></div>
 
     <div class="dev-footer">
+        <span id="footerText" style="font-size: 0.75rem;">إشراف وتطوير </span>
         <span class="dev-name">Ismail Ahmed Alrady</span>
         <div class="dev-links">
-            <span class="link-item">📧 asmaylalrdy744@gmail.com</span>
-            <span class="link-item">🌐 github.com/asmaylalrdy</span>
+            <span class="link-line">📧 asmaylalrdy744@gmail.com</span>
+            <span class="link-line">🌐 GitHub: github.com/asmaylalrdy</span>
         </div>
     </div>
 </div>
 
 <script>
-    let audioCtx = null, currentIdx = 0, alarmInterval = null;
+    let audioCtx = null, currentIdx = 0, currentLang = 'ar', alarmInterval = null;
+
+    const trans = {
+        ar: { save: "حفظ الملاحظة 💾", footer: "إشراف وتطوير المهندس", placeholder: "اكتب ملاحظة ذكية...", noNotes: "لا توجد ملاحظات 📝", prev: "السابق", next: "التالي", del: "حذف الملاحظة ✕", notes: "ملاحظة" },
+        en: { save: "Save Note 💾", footer: "Developed by Engineer", placeholder: "Write a smart note...", noNotes: "No notes yet 📝", prev: "Prev", next: "Next", del: "Delete Note ✕", notes: "Notes" }
+    };
 
     function setTheme(t) { document.body.className = t; }
+
+    function toggleLang() {
+        currentLang = currentLang === 'ar' ? 'en' : 'ar';
+        document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+        document.getElementById('lBtn').innerText = currentLang === 'ar' ? 'EN' : 'AR';
+        updateUI();
+    }
+
+    function updateUI() {
+        const t = trans[currentLang];
+        document.getElementById('saveBtn').innerText = t.save;
+        document.getElementById('footerText').innerText = t.footer;
+        document.getElementById('taskInput').placeholder = t.placeholder;
+        render();
+    }
 
     function initAudio() {
         if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -130,43 +164,45 @@
     function add() {
         const input = document.getElementById('taskInput'), time = document.getElementById('taskTime');
         if (!input.value.trim()) return;
-        const tasks = JSON.parse(localStorage.getItem('rady_v10') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_v11') || '[]');
         tasks.push({ text: input.value, time: time.value, id: Date.now(), done: false });
-        localStorage.setItem('rady_v10', JSON.stringify(tasks));
+        localStorage.setItem('rady_v11', JSON.stringify(tasks));
         input.value = ''; time.value = '';
         currentIdx = tasks.length - 1;
         render();
     }
 
     function render() {
-        const tasks = JSON.parse(localStorage.getItem('rady_v10') || '[]');
-        const display = document.getElementById('noteDisplay');
-        if (!tasks.length) { display.innerHTML = `<div class="note-card">ابدأ الآن 📝</div>`; return; }
+        const tasks = JSON.parse(localStorage.getItem('rady_v11') || '[]');
+        const display = document.getElementById('noteDisplay'), t = trans[currentLang];
+        document.getElementById('count').innerText = `${tasks.length} ${t.notes}`;
+        
+        if (!tasks.length) { display.innerHTML = `<div class="note-card">${t.noNotes}</div>`; return; }
         
         const note = tasks[currentIdx];
         display.innerHTML = `
-            <div class="note-card" key="${note.id}">
+            <div class="note-card">
                 <span class="note-text">${note.text}</span>
-                <span class="time-tag">⏰ ${note.time ? new Date(note.time).toLocaleString('ar-EG') : ''}</span>
-                <div style="margin-top:10px;">
-                    <button onclick="del(${note.id})" style="color:white; background:none; border:none; opacity:0.5;">حذف ✕</button>
-                </div>
+                <span class="time-tag">⏰ ${note.time ? new Date(note.time).toLocaleString(currentLang==='ar'?'ar-EG':'en-US') : ''}</span>
+                <div style="margin-top:10px;"><button onclick="del(${note.id})" style="color:#f87171; background:none; border:none; cursor:pointer; font-weight:bold;">${t.del}</button></div>
             </div>
-            <div style="display:flex; gap:20px; margin-top:15px;">
-                <button class="nav-btn" onclick="move(-1)">السابق</button>
-                <button class="nav-btn" onclick="move(1)">التالي</button>
+            <div class="nav-group">
+                <button class="nav-btn" onclick="move(-1)">${t.prev}</button>
+                <span style="font-size:0.85rem; font-weight:bold;">${currentIdx + 1} / ${tasks.length}</span>
+                <button class="nav-btn" onclick="move(1)">${t.next}</button>
             </div>`;
     }
 
     function move(s) {
-        const tasks = JSON.parse(localStorage.getItem('rady_v10') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_v11') || '[]');
+        if (tasks.length <= 1) return;
         currentIdx = (currentIdx + s + tasks.length) % tasks.length;
         render();
     }
 
     function del(id) {
-        let tasks = JSON.parse(localStorage.getItem('rady_v10')).filter(x => x.id !== id);
-        localStorage.setItem('rady_v10', JSON.stringify(tasks));
+        let tasks = JSON.parse(localStorage.getItem('rady_v11')).filter(x => x.id !== id);
+        localStorage.setItem('rady_v11', JSON.stringify(tasks));
         currentIdx = 0; render();
     }
 
@@ -174,30 +210,28 @@
         if (!audioCtx) return;
         const o = audioCtx.createOscillator(), g = audioCtx.createGain();
         o.connect(g); g.connect(audioCtx.destination);
-        o.type = 'sine'; o.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-        g.gain.setValueAtTime(0.5, audioCtx.currentTime);
+        o.type = 'sawtooth'; o.frequency.setValueAtTime(500, audioCtx.currentTime);
+        g.gain.setValueAtTime(0.3, audioCtx.currentTime);
         o.start(); o.stop(audioCtx.currentTime + 0.5);
     }
 
-    function stopRing() {
-        clearInterval(alarmInterval);
-        document.getElementById('alarmOverlay').style.display = 'none';
-    }
+    function stopRing() { clearInterval(alarmInterval); document.getElementById('alarmOverlay').style.display = 'none'; }
 
     setInterval(() => {
-        const tasks = JSON.parse(localStorage.getItem('rady_v10') || '[]');
+        const tasks = JSON.parse(localStorage.getItem('rady_v11') || '[]');
         const now = Date.now();
         tasks.forEach(t => {
             if (t.time && !t.done && now >= new Date(t.time).getTime()) {
                 document.getElementById('alarmMsg').innerText = t.text;
                 document.getElementById('alarmOverlay').style.display = 'flex';
-                ring(); alarmInterval = setInterval(ring, 1000);
-                t.done = true; localStorage.setItem('rady_v10', JSON.stringify(tasks));
+                ring(); alarmInterval = setInterval(ring, 1200);
+                t.done = true; localStorage.setItem('rady_v11', JSON.stringify(tasks));
             }
         });
     }, 1000);
 
-    window.onload = render;
+    function shareApp() { if(navigator.share) navigator.share({title: 'Rady Note', url: location.href}); }
+    window.onload = updateUI;
 </script>
 </body>
 </html>
