@@ -30,13 +30,13 @@
         body {
             font-family: 'Cairo', sans-serif; background-color: var(--bg); color: var(--text);
             margin: 0; padding: 10px; display: flex; justify-content: center; align-items: center;
-            height: 100vh; overflow: hidden;
+            min-height: 100dvh; overflow: hidden;
         }
 
         .container {
             width: 100%; max-width: 400px; background: var(--card);
             padding: 12px; border-radius: 25px; display: flex; flex-direction: column;
-            height: 96vh; position: relative; border: 1px solid rgba(255,255,255,0.1);
+            height: 96dvh; position: relative; border: 1px solid rgba(255,255,255,0.1);
             box-shadow: 0 15px 40px rgba(0,0,0,0.5);
         }
 
@@ -96,7 +96,7 @@
     <div id="alarmOverlay">
         <h1 style="font-size: 4rem;">🔔</h1>
         <h2 id="alarmMsg" style="padding: 20px; color:white;">الموعد حان!</h2>
-        <button onclick="stopRing()" style="padding: 12px 40px; border-radius: 30px; border: none; font-weight: 900;">إيقاف التنبيه 🔕</button>
+        <button onclick="stopRing()" style="padding: 12px 40px; border-radius: 30px; border: none; font-weight: 900; cursor: pointer;">إيقاف التنبيه 🔕</button>
     </div>
 
     <div class="header">
@@ -131,7 +131,7 @@
 
     <div class="dev-footer">
         <span id="footerText" style="font-size: 0.75rem;">إشراف وتطوير </span>
-        <span class="dev-name">Ismail Ahmed Alrady</span>
+        <span class="dev-name">Ismail Ahmed Ismail</span>
         <div class="dev-links">
             <span class="link-line">📧 asmaylalrdy744@gmail.com</span>
             <span class="link-line">🌐 GitHub: github.com/asmaylalrdy</span>
@@ -140,10 +140,14 @@
 </div>
 
 <script>
+    // Registration of Service Worker & Notification Permission
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('sw.js').then(reg => {
-                console.log('PWA Service Worker registered');
+                console.log('SW Registered');
+                if (Notification.permission !== 'granted') {
+                    Notification.requestPermission();
+                }
             }).catch(err => console.log('SW registration failed', err));
         });
     }
@@ -234,14 +238,29 @@
 
     function stopRing() { clearInterval(alarmInterval); document.getElementById('alarmOverlay').style.display = 'none'; }
 
+    // Smart Alarm Check (Handles Browser & System Notifications)
     setInterval(() => {
         const tasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
         const now = Date.now();
         tasks.forEach(t => {
             if (t.time && !t.done && now >= new Date(t.time).getTime()) {
+                // 1. App UI Notification
                 document.getElementById('alarmMsg').innerText = t.text;
                 document.getElementById('alarmOverlay').style.display = 'flex';
                 ring(); alarmInterval = setInterval(ring, 1200);
+
+                // 2. System Notification (Works when phone is locked)
+                if (Notification.permission === 'granted' && 'serviceWorker' in navigator) {
+                    navigator.serviceWorker.ready.then(registration => {
+                        registration.showNotification('Rady Note 🚀', {
+                            body: t.text,
+                            icon: 'https://cdn-icons-png.flaticon.com/512/3701/3701596.png',
+                            vibrate: [200, 100, 200],
+                            tag: 'rady-note-alert'
+                        });
+                    });
+                }
+
                 t.done = true; localStorage.setItem('rady_vPWA', JSON.stringify(tasks));
             }
         });
