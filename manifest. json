@@ -1,11 +1,11 @@
 {
-  "name": "Rady Note",
-  "short_name": "RadyNote",
+  "name": "مفكرة إس.البيلي | Is.Bily Note",
+  "short_name": "Is.Bily Note",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#ea580c",
-  "description": "Smart Note Application by Ismail Alrady",
+  "description": "Smart Note Application - مفكرة إس.البيلي | Is.Bily Note",
   "lang": "ar",
   "dir": "rtl",
   "icons": [
