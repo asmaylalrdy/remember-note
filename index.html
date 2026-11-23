@@ -6,8 +6,9 @@
     <title id="pageTitle">مفكرة إس.البيلي | Is.Bily Note</title>
     
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="./icon.png">
-    <link rel="apple-touch-icon" href="./icon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+    <link rel="apple-touch-icon" href="./icon-512.png">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -128,7 +129,7 @@
     <div class="header">
         <div class="brand-box">
             <div class="app-logo">
-                <img src="./icon.png" alt="Is.Bily Note Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3701/3701596.png'">
+                <img src="./icon-512.png" alt="Is.Bily Note Logo" onerror="this.src='./icon-192.png'">
             </div>
             <div>
                 <h2 id="appName" style="margin:0; color:var(--text); font-size: 1.05rem; font-weight: 900; line-height: 1.2;">مفكرة إس.البيلي</h2>
@@ -407,7 +408,7 @@
                     navigator.serviceWorker.ready.then(registration => {
                         registration.showNotification(trans[currentLang].appName, {
                             body: t.text,
-                            icon: './icon.png',
+                            icon: './icon-192.png',
                             vibrate: [200, 100, 200],
                             tag: 'isbily-note-alert'
                         });
