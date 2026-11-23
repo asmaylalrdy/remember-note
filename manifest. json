@@ -3,20 +3,20 @@
   "short_name": "Is.Bily Note",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#ea580c",
+  "background_color": "#070d1a",
+  "theme_color": "#0284c7",
   "description": "Smart Note Application - مفكرة إس.البيلي | Is.Bily Note",
   "lang": "ar",
   "dir": "rtl",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3701/3701596.png",
+      "src": "./icon.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3701/3701596.png",
+      "src": "./icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
