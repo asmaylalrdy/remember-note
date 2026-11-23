@@ -6,24 +6,24 @@
     <title id="pageTitle">مفكرة إس.البيلي | Is.Bily Note</title>
     
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ea580c'/><path d='M30 25h40a5 5 0 0 1 5 5v40a5 5 0 0 1-5 5H30a5 5 0 0 1-5-5V30a5 5 0 0 1 5-5zm10 15h20m-20 12h20m-20 12h12' stroke='white' stroke-width='6' stroke-linecap='round' fill='none'/><circle cx='72' cy='28' r='10' fill='%23fbbf24'/></svg>">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3701/3701596.png">
+    <link rel="icon" type="image/png" href="./icon.png">
+    <link rel="apple-touch-icon" href="./icon.png">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#ea580c">
+    <meta name="theme-color" content="#0284c7">
 
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --accent: #fb923c;
-            --primary-grad: linear-gradient(135deg, #f59e0b, #ea580c);
-            --bg: #0f172a; --card: #1e293b; --text: #f1f5f9;
+            --accent: #38bdf8;
+            --primary-grad: linear-gradient(135deg, #38bdf8, #0284c7);
+            --bg: #070d1a; --card: #0f172a; --text: #f1f5f9;
         }
         
-        body.theme-purple { --accent: #a855f7; --primary-grad: linear-gradient(135deg, #a855f7, #7e22ce); --bg: #1e1b4b; }
-        body.theme-green { --accent: #22c55e; --primary-grad: linear-gradient(135deg, #22c55e, #15803d); --bg: #064e3b; }
-        body.theme-red { --accent: #ef4444; --primary-grad: linear-gradient(135deg, #ef4444, #b91c1c); --bg: #450a0a; }
+        body.theme-purple { --accent: #a855f7; --primary-grad: linear-gradient(135deg, #a855f7, #7e22ce); --bg: #1e1b4b; --card: #2e1065; }
+        body.theme-green { --accent: #22c55e; --primary-grad: linear-gradient(135deg, #22c55e, #15803d); --bg: #064e3b; --card: #022c22; }
+        body.theme-orange { --accent: #fb923c; --primary-grad: linear-gradient(135deg, #f59e0b, #ea580c); --bg: #1c1917; --card: #292524; }
 
         * { box-sizing: border-box; transition: all 0.3s ease; }
         
@@ -36,65 +36,78 @@
         .container {
             width: 100%; max-width: 400px; background: var(--card);
             padding: 14px; border-radius: 25px; display: flex; flex-direction: column;
-            height: 96dvh; position: relative; border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+            height: 96dvh; position: relative; border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.65);
         }
 
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         
         .brand-box { display: flex; align-items: center; gap: 10px; }
         .app-logo {
-            width: 42px; height: 42px; border-radius: 12px;
-            background: var(--primary-grad); display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3); flex-shrink: 0;
+            width: 46px; height: 46px; border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.35); flex-shrink: 0;
+            border: 1.5px solid rgba(56, 189, 248, 0.35);
+            background-color: #070d1a;
         }
+        .app-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .right-tools { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
-        .theme-picker { display: flex; gap: 5px; background: rgba(0,0,0,0.25); padding: 5px 7px; border-radius: 10px; }
+        .right-tools { display: flex; flex-direction: column; gap: 5px; align-items: flex-end; }
+        .theme-picker { display: flex; gap: 5px; background: rgba(0,0,0,0.35); padding: 5px 7px; border-radius: 10px; }
         .dot { width: 14px; height: 14px; border-radius: 50%; cursor: pointer; border: 1.5px solid white; }
         
         .action-btns { display: flex; gap: 5px; }
         .btn-mini { border: none; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; cursor: pointer; font-family: 'Cairo'; }
         .btn-share { background: var(--primary-grad); color: white; }
-        .btn-lang { background: #334155; color: white; }
+        .btn-lang { background: #1e293b; color: white; border: 1px solid rgba(255,255,255,0.1); }
 
-        .counter-badge { background: rgba(255,255,255,0.1); color: var(--accent); padding: 1px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 900; display: inline-block; margin-top: 2px; }
+        .counter-badge { background: rgba(56, 189, 248, 0.15); color: var(--accent); padding: 1px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 900; display: inline-block; margin-top: 2px; }
 
-        .input-section { display: flex; flex-direction: column; gap: 7px; }
+        .input-section { display: flex; flex-direction: column; gap: 6px; }
         input { 
-            width: 100%; padding: 10px; border: 1.5px solid rgba(255,255,255,0.1); border-radius: 12px; 
-            background: rgba(0,0,0,0.2); color: var(--text); font-family: 'Cairo'; font-size: 0.85rem; outline: none;
+            width: 100%; padding: 9px 12px; border: 1.5px solid rgba(255,255,255,0.12); border-radius: 12px; 
+            background: rgba(0,0,0,0.3); color: var(--text); font-family: 'Cairo'; font-size: 0.85rem; outline: none;
         }
         input:focus { border-color: var(--accent); }
         
-        /* UX Improvement for Date/Time Field */
-        .time-wrapper { display: flex; flex-direction: column; gap: 3px; }
+        .time-wrapper { display: flex; flex-direction: column; gap: 2px; }
         .time-label { font-size: 0.72rem; color: #94a3b8; font-weight: bold; padding: 0 4px; }
         input[type="datetime-local"] { color-scheme: dark; }
 
         .main-btn-row { display: grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-top: 2px; }
-        .btn-save { background: var(--primary-grad); color: white; border: none; padding: 10px; border-radius: 12px; font-weight: 900; cursor: pointer; font-family: 'Cairo'; }
-        .btn-pdf { background: #475569; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; font-family: 'Cairo'; }
+        .btn-save { background: var(--primary-grad); color: white; border: none; padding: 9px; border-radius: 12px; font-weight: 900; cursor: pointer; font-family: 'Cairo'; }
+        .btn-cancel { background: #64748b; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; font-family: 'Cairo'; display: none; }
+        .btn-pdf { background: #334155; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; font-family: 'Cairo'; }
 
-        .single-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 10px 0; }
+        .search-box { margin-top: 8px; position: relative; }
+        .search-box input {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 7px 12px; font-size: 0.8rem; border-radius: 10px;
+        }
+
+        .single-view { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 8px 0; }
         
         .note-card {
-            width: 100%; background: rgba(255,255,255,0.04); padding: 20px;
+            width: 100%; background: rgba(255,255,255,0.04); padding: 16px;
             border-radius: 20px; border-inline-start: 5px solid var(--accent); text-align: center;
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.35s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
 
-        .note-text { font-weight: 800; font-size: 1.15rem; display: block; margin-bottom: 5px; }
-        .time-tag { font-size: 0.8rem; color: #10b981; font-weight: bold; }
+        .note-text { font-weight: 800; font-size: 1.1rem; display: block; margin-bottom: 5px; word-break: break-word; }
+        .time-tag { font-size: 0.78rem; color: #38bdf8; font-weight: bold; display: block; }
         
-        .nav-group { display: flex; gap: 15px; margin-top: 15px; align-items: center; }
-        .nav-btn { background: #334155; color: white; border: none; padding: 6px 15px; border-radius: 10px; cursor: pointer; font-size: 0.8rem; font-family: 'Cairo'; }
+        .card-actions { display: flex; justify-content: center; gap: 15px; margin-top: 10px; }
+        .card-btn { background: rgba(255,255,255,0.07); border: none; padding: 5px 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: 'Cairo'; font-size: 0.78rem; }
+        .btn-edit { color: #38bdf8; }
+        .btn-del { color: #f87171; }
 
-        .dev-footer { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; margin-top: auto; }
-        .dev-name { color: var(--accent); font-weight: 900; font-size: 1.05rem; display: block; }
-        .dev-links { font-size: 0.72rem; margin-top: 4px; color: #94a3b8; }
-        .link-line { display: block; margin: 2px 0; }
+        .nav-group { display: flex; gap: 15px; margin-top: 10px; align-items: center; }
+        .nav-btn { background: #1e293b; color: white; border: 1px solid rgba(255,255,255,0.1); padding: 5px 14px; border-radius: 10px; cursor: pointer; font-size: 0.8rem; font-family: 'Cairo'; }
+
+        .dev-footer { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px; margin-top: auto; }
+        .dev-name { color: var(--accent); font-weight: 900; font-size: 1rem; display: block; }
+        .dev-links { font-size: 0.7rem; margin-top: 2px; color: #94a3b8; }
+        .link-line { display: block; margin: 1px 0; }
 
         #alarmOverlay {
             display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -113,16 +126,9 @@
     </div>
 
     <div class="header">
-        <!-- Brand Logo & Name -->
         <div class="brand-box">
             <div class="app-logo">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                    <polyline points="14 2 14 8 20 8"></polyline>
-                    <line x1="8" y1="13" x2="16" y2="13"></line>
-                    <line x1="8" y1="17" x2="13" y2="17"></line>
-                    <circle cx="18" cy="5" r="3" fill="#fef08a" stroke="none"></circle>
-                </svg>
+                <img src="./icon.png" alt="Is.Bily Note Logo" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3701/3701596.png'">
             </div>
             <div>
                 <h2 id="appName" style="margin:0; color:var(--text); font-size: 1.05rem; font-weight: 900; line-height: 1.2;">مفكرة إس.البيلي</h2>
@@ -130,13 +136,12 @@
             </div>
         </div>
 
-        <!-- Theme & Action Tools -->
         <div class="right-tools">
             <div class="theme-picker">
-                <div class="dot" style="background: #fb923c;" onclick="setTheme('')"></div>
+                <div class="dot" style="background: #38bdf8;" onclick="setTheme('')"></div>
                 <div class="dot" style="background: #a855f7;" onclick="setTheme('theme-purple')"></div>
                 <div class="dot" style="background: #22c55e;" onclick="setTheme('theme-green')"></div>
-                <div class="dot" style="background: #ef4444;" onclick="setTheme('theme-red')"></div>
+                <div class="dot" style="background: #fb923c;" onclick="setTheme('theme-orange')"></div>
             </div>
             <div class="action-btns">
                 <button class="btn-mini btn-lang" onclick="toggleLang()" id="lBtn">EN</button>
@@ -148,22 +153,26 @@
     <div class="input-section">
         <input type="text" id="taskInput" placeholder="اكتب ملاحظة ذكية...">
         
-        <!-- UX Improved Time Input -->
         <div class="time-wrapper">
             <label for="taskTime" class="time-label" id="timeLabel">⏰ وقت التنبيه (اختياري):</label>
             <input type="datetime-local" id="taskTime">
         </div>
 
         <div class="main-btn-row">
-            <button class="btn-save" onclick="add()" id="saveBtn">حفظ الملاحظة 💾</button>
-            <button class="btn-pdf" onclick="window.print()">PDF</button>
+            <button class="btn-save" onclick="saveNote()" id="saveBtn">حفظ الملاحظة 💾</button>
+            <button class="btn-pdf" onclick="window.print()" id="pdfBtn">PDF</button>
+            <button class="btn-cancel" onclick="cancelEdit()" id="cancelEditBtn">إلغاء ✕</button>
         </div>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" oninput="handleSearch()" placeholder="🔍 ابحث في ملاحظاتك...">
     </div>
     
     <div class="single-view" id="noteDisplay"></div>
 
     <div class="dev-footer">
-        <span id="footerText" style="font-size: 0.75rem;">إشراف وتطوير </span>
+        <span id="footerText" style="font-size: 0.72rem;">إشراف وتطوير </span>
         <span class="dev-name">Ismail Ahmed Ismail</span>
         <div class="dev-links">
             <span class="link-line">📧 asmaylalrdy744@gmail.com</span>
@@ -184,33 +193,44 @@
     }
 
     let audioCtx = null, currentIdx = 0, currentLang = 'ar', alarmInterval = null;
+    let editingId = null;
 
     const trans = {
         ar: { 
             appName: "مفكرة إس.البيلي",
             save: "حفظ الملاحظة 💾", 
+            update: "تحديث الملاحظة ✏️",
+            cancel: "إلغاء ✕",
             footer: "إشراف وتطوير ", 
             placeholder: "اكتب ملاحظة ذكية...", 
+            searchPlaceholder: "🔍 ابحث في ملاحظاتك...",
             timeLabel: "⏰ وقت التنبيه (اختياري):",
             share: "مشاركة 🔗",
             noNotes: "لا توجد ملاحظات 📝", 
+            noSearchResults: "لا توجد نتائج مطابقة للبحث 🔍",
             prev: "السابق", 
             next: "التالي", 
-            del: "حذف الملاحظة ✕", 
+            edit: "تعديل ✏️",
+            del: "حذف ✕", 
             notes: "ملاحظة",
             stopAlarm: "إيقاف التنبيه 🔕"
         },
         en: { 
             appName: "Is.Bily Note",
             save: "Save Note 💾", 
+            update: "Update Note ✏️",
+            cancel: "Cancel ✕",
             footer: "Developed by Engineer", 
             placeholder: "Write a smart note...", 
+            searchPlaceholder: "🔍 Search your notes...",
             timeLabel: "⏰ Reminder Time (Optional):",
             share: "Share 🔗",
             noNotes: "No notes yet 📝", 
+            noSearchResults: "No matching notes found 🔍",
             prev: "Prev", 
             next: "Next", 
-            del: "Delete Note ✕", 
+            edit: "Edit ✏️",
+            del: "Delete ✕", 
             notes: "Notes",
             stopAlarm: "Stop Alarm 🔕"
         }
@@ -229,9 +249,11 @@
     function updateUI() {
         const t = trans[currentLang];
         document.getElementById('appName').innerText = t.appName;
-        document.getElementById('saveBtn').innerText = t.save;
+        document.getElementById('saveBtn').innerText = editingId ? t.update : t.save;
+        document.getElementById('cancelEditBtn').innerText = t.cancel;
         document.getElementById('footerText').innerText = t.footer;
         document.getElementById('taskInput').placeholder = t.placeholder;
+        document.getElementById('searchInput').placeholder = t.searchPlaceholder;
         document.getElementById('timeLabel').innerText = t.timeLabel;
         document.getElementById('shareBtn').innerText = t.share;
         document.getElementById('stopAlarmBtn').innerText = t.stopAlarm;
@@ -243,50 +265,122 @@
         if (audioCtx.state === 'suspended') audioCtx.resume();
     }
 
-    function add() {
+    function saveNote() {
         initAudio();
-        const input = document.getElementById('taskInput'), time = document.getElementById('taskTime');
+        const input = document.getElementById('taskInput');
+        const time = document.getElementById('taskTime');
         if (!input.value.trim()) return;
+
+        let tasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
+
+        if (editingId !== null) {
+            tasks = tasks.map(t => {
+                if (t.id === editingId) {
+                    return { ...t, text: input.value.trim(), time: time.value, done: false };
+                }
+                return t;
+            });
+            localStorage.setItem('rady_vPWA', JSON.stringify(tasks));
+            cancelEdit();
+        } else {
+            tasks.push({ text: input.value.trim(), time: time.value, id: Date.now(), done: false });
+            localStorage.setItem('rady_vPWA', JSON.stringify(tasks));
+            input.value = '';
+            time.value = '';
+            document.getElementById('searchInput').value = '';
+            currentIdx = tasks.length - 1;
+            render();
+        }
+    }
+
+    function startEdit(id) {
         const tasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
-        tasks.push({ text: input.value, time: time.value, id: Date.now(), done: false });
-        localStorage.setItem('rady_vPWA', JSON.stringify(tasks));
-        input.value = ''; time.value = '';
-        currentIdx = tasks.length - 1;
+        const note = tasks.find(x => x.id === id);
+        if (!note) return;
+
+        editingId = id;
+        document.getElementById('taskInput').value = note.text;
+        document.getElementById('taskTime').value = note.time || '';
+        document.getElementById('taskInput').focus();
+
+        document.getElementById('saveBtn').innerText = trans[currentLang].update;
+        document.getElementById('pdfBtn').style.display = 'none';
+        document.getElementById('cancelEditBtn').style.display = 'block';
+    }
+
+    function cancelEdit() {
+        editingId = null;
+        document.getElementById('taskInput').value = '';
+        document.getElementById('taskTime').value = '';
+        document.getElementById('saveBtn').innerText = trans[currentLang].save;
+        document.getElementById('pdfBtn').style.display = 'block';
+        document.getElementById('cancelEditBtn').style.display = 'none';
         render();
     }
 
+    function handleSearch() {
+        currentIdx = 0;
+        render();
+    }
+
+    function getFilteredTasks() {
+        const allTasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
+        const query = document.getElementById('searchInput').value.trim().toLowerCase();
+        if (!query) return allTasks;
+        return allTasks.filter(t => t.text.toLowerCase().includes(query));
+    }
+
     function render() {
-        const tasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
-        const display = document.getElementById('noteDisplay'), t = trans[currentLang];
-        document.getElementById('count').innerText = `${tasks.length} ${t.notes}`;
+        const allTasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
+        const filteredTasks = getFilteredTasks();
+        const display = document.getElementById('noteDisplay');
+        const t = trans[currentLang];
+        const query = document.getElementById('searchInput').value.trim();
+
+        document.getElementById('count').innerText = `${allTasks.length} ${t.notes}`;
         
-        if (!tasks.length) { display.innerHTML = `<div class="note-card">${t.noNotes}</div>`; return; }
+        if (!allTasks.length) {
+            display.innerHTML = `<div class="note-card">${t.noNotes}</div>`;
+            return;
+        }
+
+        if (!filteredTasks.length && query) {
+            display.innerHTML = `<div class="note-card">${t.noSearchResults}</div>`;
+            return;
+        }
+
+        if (currentIdx >= filteredTasks.length) currentIdx = 0;
         
-        const note = tasks[currentIdx];
+        const note = filteredTasks[currentIdx];
         display.innerHTML = `
             <div class="note-card">
                 <span class="note-text">${note.text}</span>
                 ${note.time ? `<span class="time-tag">⏰ ${new Date(note.time).toLocaleString(currentLang==='ar'?'ar-EG':'en-US')}</span>` : ''}
-                <div style="margin-top:10px;"><button onclick="del(${note.id})" style="color:#f87171; background:none; border:none; cursor:pointer; font-weight:bold; font-family:'Cairo';">${t.del}</button></div>
+                <div class="card-actions">
+                    <button class="card-btn btn-edit" onclick="startEdit(${note.id})">${t.edit}</button>
+                    <button class="card-btn btn-del" onclick="del(${note.id})">${t.del}</button>
+                </div>
             </div>
             <div class="nav-group">
                 <button class="nav-btn" onclick="move(-1)">${t.prev}</button>
-                <span style="font-size:0.85rem; font-weight:bold;">${currentIdx + 1} / ${tasks.length}</span>
+                <span style="font-size:0.85rem; font-weight:bold;">${currentIdx + 1} / ${filteredTasks.length}</span>
                 <button class="nav-btn" onclick="move(1)">${t.next}</button>
             </div>`;
     }
 
     function move(s) {
-        const tasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]');
-        if (tasks.length <= 1) return;
-        currentIdx = (currentIdx + s + tasks.length) % tasks.length;
+        const filteredTasks = getFilteredTasks();
+        if (filteredTasks.length <= 1) return;
+        currentIdx = (currentIdx + s + filteredTasks.length) % filteredTasks.length;
         render();
     }
 
     function del(id) {
-        let tasks = JSON.parse(localStorage.getItem('rady_vPWA')).filter(x => x.id !== id);
+        if (editingId === id) cancelEdit();
+        let tasks = JSON.parse(localStorage.getItem('rady_vPWA') || '[]').filter(x => x.id !== id);
         localStorage.setItem('rady_vPWA', JSON.stringify(tasks));
-        currentIdx = 0; render();
+        currentIdx = 0;
+        render();
     }
 
     function ring() {
@@ -313,7 +407,7 @@
                     navigator.serviceWorker.ready.then(registration => {
                         registration.showNotification(trans[currentLang].appName, {
                             body: t.text,
-                            icon: 'https://cdn-icons-png.flaticon.com/512/3701/3701596.png',
+                            icon: './icon.png',
                             vibrate: [200, 100, 200],
                             tag: 'isbily-note-alert'
                         });
