@@ -1,16 +1,22 @@
-const CACHE_NAME = 'rady-note-v1';
+const CACHE_NAME = 'isbily-note-v2';
 const ASSETS = [
-  '/',
-  '/index.html',
-  'https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap'
-  // أضف هنا أي ملفات CSS أو صور أخرى تستخدمها محلياً
+  './',
+  './index.html',
+  './manifest.json',
+  './icon-192.png',
+  './icon-512.png'
 ];
 
-// تثبيت الـ Service Worker وحفظ الملفات في الكاش
+// تثبيت الـ Service Worker وحفظ الملفات الأساسية في الكاش
 self.addEventListener('install', (event) => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
+      return Promise.all(
+        ASSETS.map((url) =>
+          cache.add(url).catch((err) => console.log('Cache skip:', url, err))
+        )
+      );
     })
   );
 });
@@ -18,32 +24,38 @@ self.addEventListener('install', (event) => {
 // تفعيل الـ Service Worker وحذف الكاش القديم
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
-      );
-    })
+    Promise.all([
+      self.clients.claim(),
+      caches.keys().then((keys) => {
+        return Promise.all(
+          keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+        );
+      })
+    ])
   );
 });
 
-// استرجاع الملفات من الكاش عند انقطاع الإنترنت
+// استرجاع الملفات من الكاش مع تحديث الشبكة
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
+    caches.match(event.request).then((cachedResponse) => {
+      return cachedResponse || fetch(event.request).then((networkResponse) => {
+        return networkResponse;
+      }).catch(() => cachedResponse);
     })
   );
 });
 
-// إدارة التنبيهات في الخلفية (Background Notifications)
-self.addEventListener('showNotification', (event) => {
-  const options = {
-    body: event.body,
-    icon: 'https://cdn-icons-png.flaticon.com/512/3701/3701596.png',
-    vibrate: [200, 100, 200],
-    badge: 'https://cdn-icons-png.flaticon.com/512/3701/3701596.png'
-  };
+// إدارة التنبيهات في الخلفية
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
   event.waitUntil(
-    self.registration.showNotification('Rady Note 🚀', options)
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if ('focus' in client) return client.focus();
+      }
+      if (clients.openWindow) return clients.openWindow('./index.html');
+    })
   );
 });
