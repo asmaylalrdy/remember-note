@@ -1,8 +1,11 @@
 {
   "version": 2,
-  "name": "rady-note",
+  "name": "isbily-note",
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/((?!manifest\\.json|sw\\.js|icon-192\\.png|icon-512\\.png|.*\\..*).*)",
+      "destination": "/index.html"
+    }
   ]
 }
